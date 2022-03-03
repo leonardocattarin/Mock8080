@@ -1,3 +1,5 @@
+`define		Test	4'b1100
+
 module Main_Module	(	CLK_50M, 
 				SW, 
 				LED,

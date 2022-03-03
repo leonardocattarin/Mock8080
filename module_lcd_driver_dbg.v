@@ -1,8 +1,10 @@
 module	LCD_Driver_Hex	(	qzt_clk,
 					addrInput,
                     dataInput,
-					signFlag,
-					dashFlag,
+
+					switchFlag,
+
+					CPU_interface,
 
 					lcd_flags,
 					lcd_data);
@@ -13,8 +15,8 @@ module	LCD_Driver_Hex	(	qzt_clk,
 input		qzt_clk;
 input	[7:0]	addrInput;
 input	[7:0]	dataInput;
-input		signFlag;
-input		dashFlag;
+input		switchFlag;
+input	[79:0]	CPU_interface;
 
 /*****************************/
 /*      	Output		 */
@@ -32,11 +34,13 @@ reg	[1:0]	lcd_flags;
 reg	[3:0]	lcd_data;
 
 reg	[1:0]	initializeLabel = 2'b01; //state variable for inizialization phases
-reg	[20:0]	counter;
+reg	[21:0]	counter;
 
 always @(posedge qzt_clk) begin
-
+	/*************************/
     // POWER-ON INITIALIZATION
+	/*************************/
+
 	if (initializeLabel == 2'b01) begin
 		// after at least 2000 clock cycles (see 23 lines below), jump to next operation
 		if (counter[19:0] == 20'b11111000000000000000) begin		// 1015808 = prev + 32720;	step #9
@@ -66,7 +70,9 @@ always @(posedge qzt_clk) begin
 			counter = counter + 1;
 		end
 
+		/**************************************/
 		// DISPLAY CONFIGURATION (COMMAND PART)
+		/**************************************/
 	end else if (initializeLabel == 2'b10) begin
 		// when done (see 25 lines below)...
 		if (counter[13:0] == 14'b11111111111111) begin
@@ -104,8 +110,10 @@ always @(posedge qzt_clk) begin
 			endcase
 			counter = counter + 1;
 		end
-
+	/***********************************/
 	// DISPLAY CONFIGURATION (SLEEP PART)
+	/***********************************/
+
 	end else if (initializeLabel == 2'b11) begin
 		// after at least 82000 clock cycles, jump to next operation
 		if (counter[16:0] == 17'b11000000000000000) begin	// 98304
@@ -114,93 +122,187 @@ always @(posedge qzt_clk) begin
 		end else begin
 			counter = counter + 1;
 		end
-
-
-// WRITING DATA TO DISPLAY
 	end else begin
-		//note : to execute next commands must have passed 2^20+2^19+2^18+2^17+2^16+2^15 cycles (around 20 ms?)
-		if (counter[20:15] == 6'b111111) begin
+		/*************************/
+		// WRITING DATA TO DISPLAY
+		/*************************/
+		//NOTE: bit 20-15 are just a requirement for getting to writing phase
+		//bit 14-12 correspond to different commands (e.g. different characters)
+		//bit 11-0 are needed for correct command timing
+		//NOTE : to execute next commands must have passed 2^20+2^19+2^18+2^17+2^16+2^15 cycles (around 20 ms?)
+		if (counter[20:16] == 5'b11111) begin
+			
+			if (counter[15:12] == 0) begin
+					case (counter[11:0])
+						// upper nimble
 
-			// "Set DD RAM Address" command (address is set to 0)
-			if (counter[14:12] == 0) begin
-				case (counter[11:0])
-					// upper nimble
-					12'b000000000000: lcd_data = 4'b1000;	// prepare data bus
-					12'b000000010000: lcd_flags = 2'b01;	// command_write enable
-					12'b000000100000: lcd_flags = 2'b00;	// command_write disable
+						//1-prepare data bus
+						12'b000000000000: lcd_data = 4'b1000;	
+						//2-command_write enable
+						12'b000000010000: lcd_flags = 2'b01;	
+						//3-command_write disable
+						12'b000000100000: lcd_flags = 2'b00;	
 
-					// lower nimble
-					12'b000001100000: lcd_data = 4'b0000;	// prepare data bus
-					12'b000001110000: lcd_flags = 2'b01;	// command_write enable
-					12'b000010000000: lcd_flags = 2'b00;	// command_write disable
-					12'b111111111111: lcd_data = 0;		// clear data bus
-				endcase
+						// lower nimble
 
-			// "Write Data to CG RAM or DD RAM" command (address is set to 0)
-			end else if (counter[14:12] <= 3'b111) begin
-				case (counter[11:0])
-					// upper nimble
-					12'b000000000000:
-						case (counter[14:12])
+						//1-prepare data bus
+						12'b000001100000: lcd_data = 4'b0000;	
+						//2-command_write enable
+						12'b000001110000: lcd_flags = 2'b01;	
+						//3-command_write disable
+						12'b000010000000: lcd_flags = 2'b00;	
+						//4-clear data bus 
+						12'b111111111111: lcd_data = 0;		
+					endcase
+			end  else if (switchFlag) begin
+				//switchflag = 1 RAM Debug
+				// "Set DD RAM Address" command (address is set to 0)
+				
+				// "Write Data to CG RAM or DD RAM" command (address is set to 0)
+				 if (counter[15:12] <= 4'b0111) begin
+					case (counter[11:0])
+						// upper nimble
+						12'b000000000000:
+							case (counter[15:12])
 
-							3'b101: if (dataInput[3:0] <= 4'b1001) 
-									lcd_data = 4'b0011;
-							 	else 
-							 		lcd_data = 4'b0100;
+								//second data char
+								4'b0101: if (dataInput[3:0] <= 4'b1001) 
+										lcd_data = 4'b0011;
+									else 
+										lcd_data = 4'b0100;
 
-							3'b100: if (dataInput[7:4] <= 4'b1001) 
-									lcd_data = 4'b0011;
-							 	else 
-							 		lcd_data = 4'b0100;
-						
-							3'b011: lcd_data = 4'b0010;
+								//first data char
+								4'b0100: if (dataInput[7:4] <= 4'b1001) 
+										lcd_data = 4'b0011;
+									else 
+										lcd_data = 4'b0100;
+							
+								//space
+								4'b0011: lcd_data = 4'b0010;
 
-							3'b010: if (addrInput[3:0] <= 4'b1001) 
-									lcd_data = 4'b0011;
-							 	else 
-							 		lcd_data = 4'b0100;
+								//second addr char
+								4'b0010: if (addrInput[3:0] <= 4'b1001) 
+										lcd_data = 4'b0011;
+									else 
+										lcd_data = 4'b0100;
+								//first addr char
+								4'b0001: if (addrInput[7:4] <= 4'b1001) 
+										lcd_data = 4'b0011;
+									else 
+										lcd_data = 4'b0100;
+										
+								default: lcd_data = 4'b0010;
+							endcase
+						12'b000000010000: lcd_flags = 2'b11;	// data_write enable
+						12'b000000100000: lcd_flags = 2'b00;	// data_write disable
 
-							3'b001: if (addrInput[7:4] <= 4'b1001) 
-									lcd_data = 4'b0011;
-							 	else 
-							 		lcd_data = 4'b0100;
-									 
-							default: lcd_data = 4'b0010;
-						endcase
-					12'b000000010000: lcd_flags = 2'b11;	// data_write enable
-					12'b000000100000: lcd_flags = 2'b00;	// data_write disable
+						// lower nimble
+						12'b000001100000:
+							case (counter[15:12])
+								4'b0101: if (dataInput[3:0] <= 4'b1001)
+										lcd_data = dataInput[3:0];
+									else 
+										lcd_data = dataInput[3:0] - 4'b1001;
 
-					// lower nimble
-					12'b000001100000:
-						case (counter[14:12])
-							3'b101: if (dataInput[3:0] <= 4'b1001)
-									lcd_data = dataInput[3:0];
-							 	else 
-							 		lcd_data = dataInput[3:0] - 4'b1001;
+								4'b0100: if (dataInput[7:4] <= 4'b1001) 
+										lcd_data = dataInput[7:4];
+									else 
+										lcd_data = dataInput[7:4] - 4'b1001;
+							
+								4'b0011: lcd_data = 4'b0000;
 
-							3'b100: if (dataInput[7:4] <= 4'b1001) 
-									lcd_data = dataInput[7:4];
-							 	else 
-							 		lcd_data = dataInput[7:4] - 4'b1001;
-						
-							3'b011: lcd_data = 4'b0000;
+								4'b0010: if (addrInput[3:0] <= 4'b1001) 
+										lcd_data = addrInput[3:0];
+									else 
+										lcd_data = addrInput[3:0] - 4'b1001;
 
-							3'b010: if (addrInput[3:0] <= 4'b1001) 
-									lcd_data = addrInput[3:0];
-							 	else 
-							 		lcd_data = addrInput[3:0] - 4'b1001;
+								4'b0001: if (addrInput[7:4] <= 4'b1001) 
+										lcd_data = addrInput[7:4];
+									else 
+										lcd_data = addrInput[7:4] - 4'b1001;
+										
+								default: lcd_data = 4'b0000;
+							endcase
+						12'b000001110000: lcd_flags = 2'b11;	// data_write enable
+						12'b000010000000: lcd_flags = 2'b00;	// data_write disable
+						12'b111111111111: lcd_data = 0;		// clear data bus
+					endcase
+				end
+				
+			end else begin
+				//Switchflag = 0 CPU DEBUG
 
-							3'b001: if (addrInput[7:4] <= 4'b1001) 
-									lcd_data = addrInput[7:4];
-							 	else 
-							 		lcd_data = addrInput[7:4] - 4'b1001;
-									 
-							default: lcd_data = 4'b0000;
-						endcase
-					12'b000001110000: lcd_flags = 2'b11;	// data_write enable
-					12'b000010000000: lcd_flags = 2'b00;	// data_write disable
-					12'b111111111111: lcd_data = 0;		// clear data bus
-				endcase
+				// "Write Data to CG RAM or DD RAM" command (address is set to 0)
+				 if (counter[15:12] <= 4'b0111) begin
+					case (counter[11:0])
+						// upper nimble
+						12'b000000000000:
+							case (counter[15:12])
+
+								//second data char
+								4'b0101: if (dataInput[3:0] <= 4'b1001) 
+										lcd_data = 4'b0011;
+									else 
+										lcd_data = 4'b0100;
+
+								//first data char
+								4'b0100: if (dataInput[7:4] <= 4'b1001) 
+										lcd_data = 4'b0011;
+									else 
+										lcd_data = 4'b0100;
+							
+								//space
+								4'b0011: lcd_data = 4'b0010;
+
+								//second addr char
+								4'b0010: if (addrInput[3:0] <= 4'b1001) 
+										lcd_data = 4'b0011;
+									else 
+										lcd_data = 4'b0100;
+								//first addr char
+								4'b0001: if (addrInput[7:4] <= 4'b1001) 
+										lcd_data = 4'b0011;
+									else 
+										lcd_data = 4'b0100;
+										
+								default: lcd_data = 4'b0010;
+							endcase
+						12'b000000010000: lcd_flags = 2'b11;	// data_write enable
+						12'b000000100000: lcd_flags = 2'b00;	// data_write disable
+
+						// lower nimble
+						12'b000001100000:
+							case (counter[15:12])
+								4'b0101: if (dataInput[3:0] <= 4'b1001)
+										lcd_data = dataInput[3:0];
+									else 
+										lcd_data = dataInput[3:0] - 4'b1001;
+
+								4'b0100: if (dataInput[7:4] <= 4'b1001) 
+										lcd_data = dataInput[7:4];
+									else 
+										lcd_data = dataInput[7:4] - 4'b1001;
+							
+								4'b0011: lcd_data = 4'b0000;
+
+								4'b0010: if (addrInput[3:0] <= 4'b1001) 
+										lcd_data = addrInput[3:0];
+									else 
+										lcd_data = addrInput[3:0] - 4'b1001;
+
+								4'b0001: if (addrInput[7:4] <= 4'b1001) 
+										lcd_data = addrInput[7:4];
+									else 
+										lcd_data = addrInput[7:4] - 4'b1001;
+										
+								default: lcd_data = 4'b0000;
+							endcase
+						12'b000001110000: lcd_flags = 2'b11;	// data_write enable
+						12'b000010000000: lcd_flags = 2'b00;	// data_write disable
+						12'b111111111111: lcd_data = 0;		// clear data bus
+					endcase
+				end
+
 			end
 		end
 		counter = counter + 1;
