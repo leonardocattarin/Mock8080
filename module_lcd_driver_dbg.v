@@ -1,3 +1,9 @@
+`define		R_upper	4'b0101
+`define		R_lower	4'b0010
+
+`define		M_upper	4'b0100
+`define		M_lower	4'b1101
+
 module	LCD_Driver_Hex	(	qzt_clk,
 					addrInput,
                     dataInput,
@@ -166,31 +172,41 @@ always @(posedge qzt_clk) begin
 							case (counter[15:12])
 
 								//second data char
-								4'b0101: if (dataInput[3:0] <= 4'b1001) 
+								4'b1000: if (dataInput[3:0] <= 4'b1001) 
 										lcd_data = 4'b0011;
 									else 
 										lcd_data = 4'b0100;
 
 								//first data char
-								4'b0100: if (dataInput[7:4] <= 4'b1001) 
+								4'b0111: if (dataInput[7:4] <= 4'b1001) 
 										lcd_data = 4'b0011;
 									else 
 										lcd_data = 4'b0100;
 							
 								//space
-								4'b0011: lcd_data = 4'b0010;
+								4'b0110: lcd_data = 4'b0010;
 
 								//second addr char
-								4'b0010: if (addrInput[3:0] <= 4'b1001) 
+								4'b0101: if (addrInput[3:0] <= 4'b1001) 
 										lcd_data = 4'b0011;
 									else 
 										lcd_data = 4'b0100;
 								//first addr char
-								4'b0001: if (addrInput[7:4] <= 4'b1001) 
+								4'b0100: if (addrInput[7:4] <= 4'b1001) 
 										lcd_data = 4'b0011;
 									else 
 										lcd_data = 4'b0100;
-										
+
+								//Space
+								4'b0011: lcd_data = 4'b0010;
+
+								//Char M
+								4'b0010: 
+										lcd_data = `M_upper;
+								//Char R
+								4'b0001: 
+										lcd_data = `R_upper;
+	
 								default: lcd_data = 4'b0010;
 							endcase
 						12'b000000010000: lcd_flags = 2'b11;	// data_write enable
@@ -199,27 +215,45 @@ always @(posedge qzt_clk) begin
 						// lower nimble
 						12'b000001100000:
 							case (counter[15:12])
-								4'b0101: if (dataInput[3:0] <= 4'b1001)
+								//second data char
+								4'b1000: if (dataInput[3:0] <= 4'b1001)
 										lcd_data = dataInput[3:0];
 									else 
 										lcd_data = dataInput[3:0] - 4'b1001;
 
-								4'b0100: if (dataInput[7:4] <= 4'b1001) 
+									//restart writing procedure
+									counter[15:12] <= 0;
+
+								//first data char
+								4'b0111: if (dataInput[7:4] <= 4'b1001) 
 										lcd_data = dataInput[7:4];
 									else 
 										lcd_data = dataInput[7:4] - 4'b1001;
 							
-								4'b0011: lcd_data = 4'b0000;
+								//Space
+								4'b0110: lcd_data = 4'b0000;
 
-								4'b0010: if (addrInput[3:0] <= 4'b1001) 
+								//Second addr Char
+								4'b0101: if (addrInput[3:0] <= 4'b1001) 
 										lcd_data = addrInput[3:0];
 									else 
 										lcd_data = addrInput[3:0] - 4'b1001;
 
-								4'b0001: if (addrInput[7:4] <= 4'b1001) 
+								//First addr char
+								4'b0100: if (addrInput[7:4] <= 4'b1001) 
 										lcd_data = addrInput[7:4];
 									else 
 										lcd_data = addrInput[7:4] - 4'b1001;
+
+								//Space
+								4'b0011: lcd_data = 4'b0010;
+
+								//Char M
+								4'b0010: 
+										lcd_data = `M_lower;
+								//Char R
+								4'b0001: 
+										lcd_data = `R_lower;
 										
 								default: lcd_data = 4'b0000;
 							endcase
