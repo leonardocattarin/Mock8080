@@ -10,7 +10,7 @@
 `define		P_upper	4'b0101
 `define		P_lower	4'b0000
 
-module	LCD_Driver_Hex	(	qzt_clk,
+module	LCD_Driver_Dbg	(	qzt_clk,
 					addrInput,
                     dataInput,
 
@@ -167,8 +167,9 @@ always @(posedge qzt_clk) begin
 						12'b111111111111: lcd_data = 0;		
 					endcase
 			end  else if (switchFlag) begin
+				/************************/
 				//switchflag = 1 RAM Debug
-				// "Set DD RAM Address" command (address is set to 0)
+				/************************/
 				
 				// "Write Data to CG RAM or DD RAM" command (address is set to 0)
 				 if (counter[15:12] <= 4'b0111) begin
@@ -222,14 +223,15 @@ always @(posedge qzt_clk) begin
 						12'b000001100000:
 							case (counter[15:12])
 								//second data char
-								4'b1000: if (dataInput[3:0] <= 4'b1001)
+								4'b1000: begin 
+									if (dataInput[3:0] <= 4'b1001)
 										lcd_data = dataInput[3:0];
 									else 
 										lcd_data = dataInput[3:0] - 4'b1001;
 
 									//restart writing procedure
-									counter[15:12] <= 0;
-
+									counter[15:12] = 0;
+								end
 								//first data char
 								4'b0111: if (dataInput[7:4] <= 4'b1001) 
 										lcd_data = dataInput[7:4];
@@ -270,7 +272,9 @@ always @(posedge qzt_clk) begin
 				end
 				
 			end else begin
-				//Switchflag = 0 CPU DEBUG
+				/************************/
+				//switchflag = 0 CPU Debug
+				/************************/
 
 				// "Write Data to CG RAM or DD RAM" command (address is set to 0)
 				 if (counter[15:12] <= 4'b0111) begin
@@ -324,14 +328,15 @@ always @(posedge qzt_clk) begin
 						12'b000001100000:
 							case (counter[15:12])
 								//second data char
-								4'b1000: if (dataInput[3:0] <= 4'b1001)
+								4'b1000: begin
+									 if (dataInput[3:0] <= 4'b1001)
 										lcd_data = dataInput[3:0];
 									else 
 										lcd_data = dataInput[3:0] - 4'b1001;
 
 									//restart writing procedure
-									counter[15:12] <= 0;
-
+									counter[15:12] = 0;
+								end
 								//first data char
 								4'b0111: if (dataInput[7:4] <= 4'b1001) 
 										lcd_data = dataInput[7:4];

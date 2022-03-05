@@ -100,11 +100,11 @@ Module_SynchroCounter_8_bit_SR_bidirectional knob_counter	(	.qzt_clk(CLK_50M),
 /**********************************/
 
 //shows addres and data in Hexadecimal format
-LCD_Driver_Hex lcd_driver	(	.qzt_clk(CLK_50M),
+LCD_Driver_Dbg lcd_driver	(	.qzt_clk(CLK_50M),
 					.addrInput(w_dbg_addr_RAM),
                     .dataInput(w_dbg_data_RAM),
-					.signFlag(0),
-					.dashFlag(0),
+					.switchFlag(0),
+					.CPU_interface(),
 
 					.lcd_flags({LCD_RS, LCD_E}),
 					.lcd_data(LCD_DB[7:4]));
