@@ -10,6 +10,27 @@
 `define		P_upper	4'b0101
 `define		P_lower	4'b0000
 
+`define		I_upper	4'b0100
+`define		I_lower	4'b1001
+
+`define		S_upper	4'b0101
+`define		S_lower	4'b0011
+
+`define		T_upper	4'b0101
+`define		T_lower	4'b0100
+
+`define		W_upper	4'b0101
+`define		W_lower	4'b0111
+
+`define		Z_upper	4'b0101
+`define		Z_lower	4'b1010
+
+`define		A_upper	4'b0100
+`define		A_lower	4'b0001
+
+`define		B_upper	4'b0100
+`define		B_lower	4'b0010
+
 module	LCD_Driver_Dbg	(	qzt_clk,
 					addrInput,
                     dataInput,
@@ -17,6 +38,7 @@ module	LCD_Driver_Dbg	(	qzt_clk,
 					switchFlag,
 
 					CPU_interface,
+					dbg_reg_addr,
 
 					lcd_flags,
 					lcd_data);
@@ -298,24 +320,39 @@ always @(posedge qzt_clk) begin
 								//space
 								4'b0110: lcd_data = 4'b0010;
 
-								//second addr char
-								4'b0101: if (addrInput[3:0] <= 4'b1001) 
-										lcd_data = 4'b0011;
-									else 
-										lcd_data = 4'b0100;
-								//first addr char
-								4'b0100: if (addrInput[7:4] <= 4'b1001) 
-										lcd_data = 4'b0011;
-									else 
-										lcd_data = 4'b0100;
+								//second Reg Name char
+								4'b0101: case(dbg_reg_addr)
+										4'0000:;
+										4'0001:;
+										4'0010:;
+										4'0011:;
+										4'0101:;
+										4'0110:;
+										4'0111:;
+										4'1000:;
+										4'1001:;
+
+								//first Reg Name char
+								4'b0100: case(dbg_reg_addr)
+										4'0000:;
+										4'0001:;
+										4'0010:;
+										4'0011:;
+										4'0101:;
+										4'0110:;
+										4'0111:;
+										4'1000:;
+										4'1001:;
+
+										
 
 								//Space
 								4'b0011: lcd_data = 4'b0010;
 
-								//Char M
+								//Char P
 								4'b0010: 
 										lcd_data = `P_upper;
-								//Char R
+								//Char C
 								4'b0001: 
 										lcd_data = `C_upper;
 	
