@@ -29,6 +29,8 @@
 *.csv
 *.txt
 *.log
+*.mrp
+*.lst
 /xlnx_auto_0_xdb
 /xst
 /_xmsgs
