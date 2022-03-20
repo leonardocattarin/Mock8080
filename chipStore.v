@@ -226,6 +226,46 @@ end
 
 endmodule
 
+/*****************************/
+/*** Module_MonostableHold_v2 ***/
+/*****************************/
+//implements debouncing also for pushbutton rise
+
+`define		defaultN 	28'b0000000011110100001001000000	//	10^6 ===> 20 ms
+
+module Module_Monostable_enforced	(	clk_in,
+					monostable_input,
+					N,
+
+					monostable_output);
+
+input		clk_in;
+input		monostable_input;
+input	[27:0]	N;
+
+output		monostable_output;
+
+reg		monostable_output;
+
+reg		monostable_input_old;
+reg 	[27:0]	counter;
+
+always @(posedge clk_in) begin
+	if (counter == 0) begin
+		if (!monostable_input_old & monostable_input) begin
+			counter <= ((N)? N : `defaultN) - 1;
+			monostable_output <= 1;
+		end else
+			monostable_output <= 0;
+	end else if(monostable_input)begin
+		counter <= ((N)? N : `defaultN) - 1;
+	end else
+		counter <= counter - 1;
+	monostable_input_old <= monostable_input;
+end
+
+endmodule
+
 /**********************************/
 /*** Module_ToggleFlipFlop_sync ***/
 /**********************************/

@@ -72,13 +72,13 @@ buf(LED[0],w_stable_BTN_EAST);
 /**********************************/
 
 //Two monostables for the knob inputs
-Module_Monostable	monostable_knob_A (	.clk_in(CLK_50M),
+Module_Monostable_enforced	monostable_knob_A (	.clk_in(CLK_50M),
 					.monostable_input(ROT_A),
 					.N(defaultN/8),
 
 					.monostable_output(w_stable_ROT_A));
 
-Module_Monostable	monostable_knob_B (	.clk_in(CLK_50M),
+Module_Monostable_enforced	monostable_knob_B (	.clk_in(CLK_50M),
 					.monostable_input(ROT_B),
 					.N(defaultN/8),
 
@@ -143,7 +143,7 @@ Module_FrequencyDivider custom_clk_gen	(	.clk_in(CLK_50M),
 
 					.clk_out(custom_clk));
 
-Module_Monostable	Button_East_Monostable(	.clk_in(CLK_50M),
+Module_Monostable_enforced	Button_East_Monostable(	.clk_in(CLK_50M),
 					.monostable_input(BTN_EAST),
 					.N(defaultN*4),
 					.monostable_output(w_stable_BTN_EAST));

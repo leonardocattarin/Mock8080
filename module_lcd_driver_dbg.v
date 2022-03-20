@@ -209,7 +209,7 @@ always @(posedge qzt_clk) begin
 				/************************/
 				
 				// "Write Data to CG RAM or DD RAM" command (address is set to 0)
-				 if (counter[15:12] <= 4'b0111) begin
+				 if (counter[15:12] <= 4'b1000) begin
 					case (counter[11:0])
 						// upper nimble
 						12'b000000000000:
@@ -267,7 +267,7 @@ always @(posedge qzt_clk) begin
 										lcd_data = dataInput[3:0] - 4'b1001;
 
 									//restart writing procedure
-									counter[15:12] = 0;
+									
 								end
 								//first data char
 								4'b0111: if (dataInput[7:4] <= 4'b1001) 
@@ -314,7 +314,7 @@ always @(posedge qzt_clk) begin
 				/************************/
 
 				// "Write Data to CG RAM or DD RAM" command (address is set to 0)
-				 if (counter[15:12] <= 4'b0111) begin
+				 if (counter[15:12] <= 4'b1000) begin
 					case (counter[11:0])
 						// upper nimble
 						12'b000000000000:
@@ -569,7 +569,7 @@ always @(posedge qzt_clk) begin
 													lcd_data = CPU_interface[3:0] - 4'b1001;
 											
 									endcase
-								counter[15:12] = 0;
+								
 				 				end
 
 								//first Data char
