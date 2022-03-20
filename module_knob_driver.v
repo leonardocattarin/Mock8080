@@ -20,10 +20,10 @@ reg rot_B_old;
 
 always @(posedge qzt_clk) begin
     //rot A anticipates B => right rotation (anti-orario)
-    if (rot_A && rot_B && !rot_B_old) begin
+    if (rot_A && rot_B && !rot_B_old && rot_A_old) begin
         pulse <= 1;
         direction <= 0;
-    end else if (rot_B  && rot_A && !rot_A_old) begin
+    end else if (rot_B  && rot_A && !rot_A_old && rot_B_old) begin
         pulse <= 1;
         direction <= 1;
     end else begin
