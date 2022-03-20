@@ -41,6 +41,10 @@ wire w_pulse_wire;
 wire w_direction;
 wire w_stable_ROT_A;
 wire w_stable_ROT_B;
+wire w_stable_BTN_EAST;
+
+//wire for choosing register visualization
+wire [3:0] w_CPU_reg;
 
 wire custom_clk;
 
@@ -57,7 +61,8 @@ buf(LCD_RW, 0); // only writing on LCD
 buf(LCD_DB[3:0], 4'b1111); //we use only 4-bit LCD interface
 
 //temp
-buf(LED[7:0],0);
+buf(LED[7:1],0);
+buf(LED[0],w_stable_BTN_EAST);
 
 
 
@@ -106,12 +111,27 @@ Module_SynchroCounter_8_bit_SR_bidirectional knob_counter	(	.qzt_clk(CLK_50M),
 /**********************************/
 
 //shows addres and data in Hexadecimal format
+//switchflag reference
+/*
+0000 -> PC
+0001 -> IR
+0010 -> ST
+0011 -> W
+0100 -> Z
+0101 -> A
+0110 -> B
+0111 -> C
+1000 -> SP
+1001 -> Addr
+1010 -> Data_out
+1011 -> Data_in
+*/
 LCD_Driver_Dbg lcd_driver	(	.qzt_clk(CLK_50M),
 					.addrInput(w_dbg_addr_RAM),
                     .dataInput(w_dbg_data_RAM),
 					.switchFlag(SW[0]),
 					.CPU_interface(96'd0),
-					.dbg_reg_addr(4'b0000),
+					.dbg_reg_addr(w_CPU_reg),
 
 					.lcd_flags({LCD_RS, LCD_E}),
 					.lcd_data(LCD_DB[7:4]));
@@ -122,6 +142,20 @@ Module_FrequencyDivider custom_clk_gen	(	.clk_in(CLK_50M),
 					.period(29'd100000000),
 
 					.clk_out(custom_clk));
+
+Module_Monostable	Button_East_Monostable(	.clk_in(CLK_50M),
+					.monostable_input(BTN_EAST),
+					.N(defaultN*4),
+					.monostable_output(w_stable_BTN_EAST));
+
+Module_SynchroCounter_8_bit_SR Debug_Reg_Counter	(	.qzt_clk(CLK_50M),
+						.clk_in(w_stable_BTN_EAST),
+						.reset(0),
+						.set(0),
+						.presetValue(0),
+						.limit(4'b1100),
+
+						.out(w_CPU_reg));
 
 
 
