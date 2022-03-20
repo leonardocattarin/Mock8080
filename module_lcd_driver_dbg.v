@@ -31,6 +31,19 @@
 `define		B_upper	4'b0100
 `define		B_lower	4'b0010
 
+`define		T_upper	4'b0101
+`define		T_lower	4'b0100
+
+`define		EMPTY_upper	4'b0010
+`define		EMPTY_lower	4'b0000
+
+`define		D_upper	4'b0100
+`define		D_lower	4'b0100
+
+`define		O_upper	4'b0100
+`define		O_lower	4'b1111
+
+
 module	LCD_Driver_Dbg	(	qzt_clk,
 					addrInput,
                     dataInput,
@@ -50,7 +63,8 @@ input		qzt_clk;
 input	[7:0]	addrInput;
 input	[7:0]	dataInput;
 input		switchFlag;
-input	[79:0]	CPU_interface;
+input	[95:0]	CPU_interface;
+input 	[3:0]	dbg_reg_addr;
 
 /*****************************/
 /*      	Output		 */
@@ -305,49 +319,172 @@ always @(posedge qzt_clk) begin
 						12'b000000000000:
 							case (counter[15:12])
 
-								//second data char
-								4'b1000: if (dataInput[3:0] <= 4'b1001) 
-										lcd_data = 4'b0011;
-									else 
-										lcd_data = 4'b0100;
+								//Second Data char
+								4'b1000: case(dbg_reg_addr)
+										4'b1011://DI (data in)
+											if (CPU_interface[91:88] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+										4'b1010://DO (data out)
+											if (CPU_interface[83:80] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+										4'b1001://AD (address)
+											if (CPU_interface[75:72] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+										4'b1000://SP
+											if (CPU_interface[67:64] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+										4'b0111://C
+											if (CPU_interface[59:56] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+										4'b0110://B
+											if (CPU_interface[51:48] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+										4'b0101://A
+											if (CPU_interface[43:40] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+										4'b0100://Z
+											if (CPU_interface[35:32] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+										4'b0011://W
+											if (CPU_interface[27:24] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+										4'b0010://ST
+											if (CPU_interface[19:16] <= 4'b1001) 
+													lcd_data = 4'b0011;
+												else 
+													lcd_data = 4'b0100;
+										4'b0001://IR
+											if (CPU_interface[11:8] <= 4'b1001) 
+											lcd_data = 4'b0011;
+												else 
+											lcd_data = 4'b0100;
+										4'b0000://PC
+											if (CPU_interface[3:0] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+								endcase
 
-								//first data char
-								4'b0111: if (dataInput[7:4] <= 4'b1001) 
-										lcd_data = 4'b0011;
-									else 
-										lcd_data = 4'b0100;
-							
+								//first Data char
+								4'b0111: case(dbg_reg_addr)
+										4'b1011://DI (data in)
+											if (CPU_interface[95:92] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+										4'b1010://DO (data out)
+											if (CPU_interface[87:84] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+										4'b1001://AD (address)
+											if (CPU_interface[79:76] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+										4'b1000://SP
+											if (CPU_interface[71:68] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+										4'b0111://C
+											if (CPU_interface[63:60] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+										4'b0110://B
+											if (CPU_interface[55:52] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+										4'b0101://A
+											if (CPU_interface[47:44] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+										4'b0100://Z
+											if (CPU_interface[39:36] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+										4'b0011://W
+											if (CPU_interface[31:28] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+										4'b0010://ST
+											if (CPU_interface[23:20] <= 4'b1001) 
+													lcd_data = 4'b0011;
+												else 
+													lcd_data = 4'b0100;
+										4'b0001://IR
+											if (CPU_interface[15:12] <= 4'b1001) 
+											lcd_data = 4'b0011;
+												else 
+											lcd_data = 4'b0100;
+										4'b0000://PC
+											if (CPU_interface[7:4] <= 4'b1001) 
+												lcd_data = 4'b0011;
+											else 
+												lcd_data = 4'b0100;
+								endcase
+
 								//space
-								4'b0110: lcd_data = 4'b0010;
+								4'b0110: lcd_data = `EMPTY_upper;
 
 								//second Reg Name char
 								4'b0101: case(dbg_reg_addr)
-										4'0000:;
-										4'0001:;
-										4'0010:;
-										4'0011:;
-										4'0101:;
-										4'0110:;
-										4'0111:;
-										4'1000:;
-										4'1001:;
+										4'b1011:lcd_data = `I_upper;//DI (data in)
+										4'b1010:lcd_data = `O_upper;//DO (data out)
+										4'b1001:lcd_data = `D_upper;//AD (address)
+										4'b1000:lcd_data = `P_upper;//SP
+										4'b0111:lcd_data = `EMPTY_upper;//C
+										4'b0110:lcd_data = `EMPTY_upper;//B
+										4'b0101:lcd_data = `EMPTY_upper;//A
+										4'b0100:lcd_data = `EMPTY_upper;//Z
+										4'b0011:lcd_data = `EMPTY_upper;//W
+										4'b0010:lcd_data = `T_upper;//ST
+										4'b0001:lcd_data = `R_upper;//IR
+										4'b0000:lcd_data = `C_upper;//PC
+								endcase
 
 								//first Reg Name char
 								4'b0100: case(dbg_reg_addr)
-										4'0000:;
-										4'0001:;
-										4'0010:;
-										4'0011:;
-										4'0101:;
-										4'0110:;
-										4'0111:;
-										4'1000:;
-										4'1001:;
-
+										4'b1011:lcd_data = `D_upper;//DI (data in)
+										4'b1010:lcd_data = `D_upper;//DO (data out)
+										4'b1001:lcd_data = `A_upper;//AD (address)
+										4'b1000:lcd_data = `S_upper;//SP
+										4'b0111:lcd_data = `C_upper;//C
+										4'b0110:lcd_data = `B_upper;//B
+										4'b0101:lcd_data = `A_upper;//A
+										4'b0100:lcd_data = `Z_upper;//Z
+										4'b0011:lcd_data = `W_upper;//W
+										4'b0010:lcd_data = `S_upper;//ST
+										4'b0001:lcd_data = `I_upper;//IR
+										4'b0000:lcd_data = `P_upper;//PC
+								endcase
 										
-
+										
 								//Space
-								4'b0011: lcd_data = 4'b0010;
+								4'b0011: lcd_data = `EMPTY_upper;
 
 								//Char P
 								4'b0010: 
@@ -364,44 +501,185 @@ always @(posedge qzt_clk) begin
 						// lower nimble
 						12'b000001100000:
 							case (counter[15:12])
-								//second data char
+
+
+								//Second Data char
 								4'b1000: begin
-									 if (dataInput[3:0] <= 4'b1001)
-										lcd_data = dataInput[3:0];
-									else 
-										lcd_data = dataInput[3:0] - 4'b1001;
+											case(dbg_reg_addr)
+											4'b1011://DI (data in)
+												if (CPU_interface[91:88] <= 4'b1001) 
+													lcd_data = CPU_interface[91:88];
+												else 
+													lcd_data = CPU_interface[91:88] - 4'b1001;
+											4'b1010://DO (data out)
+												if (CPU_interface[83:80] <= 4'b1001) 
+													lcd_data = CPU_interface[83:80];
+												else 
+													lcd_data = CPU_interface[83:80] - 4'b1001;
+											4'b1001://AD (address)
+												if (CPU_interface[75:72] <= 4'b1001) 
+													lcd_data = CPU_interface[75:72];
+												else 
+													lcd_data = CPU_interface[75:72] - 4'b1001;
+											4'b1000://SP
+												if (CPU_interface[67:64] <= 4'b1001) 
+													lcd_data = CPU_interface[67:64];
+												else 
+													lcd_data = CPU_interface[67:64] - 4'b1001;
+											4'b0111://C
+												if (CPU_interface[59:56] <= 4'b1001) 
+													lcd_data = CPU_interface[59:56];
+												else 
+													lcd_data = CPU_interface[59:56] - 4'b1001;
+											4'b0110://B
+												if (CPU_interface[51:48] <= 4'b1001) 
+													lcd_data = CPU_interface[51:48];
+												else 
+													lcd_data = CPU_interface[51:48] - 4'b1001;
+											4'b0101://A
+												if (CPU_interface[43:40] <= 4'b1001) 
+													lcd_data = CPU_interface[43:40];
+												else 
+													lcd_data = CPU_interface[43:40] - 4'b1001;
+											4'b0100://Z
+												if (CPU_interface[35:32] <= 4'b1001) 
+													lcd_data = CPU_interface[35:32];
+												else 
+													lcd_data = CPU_interface[35:32] - 4'b1001;
+											4'b0011://W
+												if (CPU_interface[27:24] <= 4'b1001) 
+													lcd_data = CPU_interface[27:24];
+												else 
+													lcd_data = CPU_interface[27:24] - 4'b1001;
+											4'b0010://ST
+												if (CPU_interface[19:16] <= 4'b1001) 
+													lcd_data = CPU_interface[19:16];
+												else 
+													lcd_data = CPU_interface[19:16] - 4'b1001;
+											4'b0001://IR
+												if (CPU_interface[11:8] <= 4'b1001) 
+													lcd_data = CPU_interface[11:8];
+												else 
+													lcd_data = CPU_interface[11:8] - 4'b1001;
+											4'b0000://PC
+												if (CPU_interface[3:0] <= 4'b1001) 
+													lcd_data = CPU_interface[3:0];
+												else 
+													lcd_data = CPU_interface[3:0] - 4'b1001;
+											
+									endcase
+								counter[15:12] = 0;
+				 				end
 
-									//restart writing procedure
-									counter[15:12] = 0;
-								end
-								//first data char
-								4'b0111: if (dataInput[7:4] <= 4'b1001) 
-										lcd_data = dataInput[7:4];
-									else 
-										lcd_data = dataInput[7:4] - 4'b1001;
-							
+								//first Data char
+								4'b0111: case(dbg_reg_addr)
+										4'b1011://DI (data in)
+											if (CPU_interface[95:92] <= 4'b1001) 
+												lcd_data = CPU_interface[95:92];
+											else 
+												lcd_data = CPU_interface[95:92] - 4'b1001;
+										4'b1010://DO (data out)
+											if (CPU_interface[87:84] <= 4'b1001) 
+												lcd_data = CPU_interface[87:84];
+											else 
+												lcd_data = CPU_interface[87:84] - 4'b1001;
+										4'b1001://AD (address)
+											if (CPU_interface[79:76] <= 4'b1001) 
+												lcd_data = CPU_interface[79:76];
+											else 
+												lcd_data = CPU_interface[79:76] - 4'b1001;
+										4'b1000://SP
+											if (CPU_interface[71:68] <= 4'b1001) 
+												lcd_data = CPU_interface[71:68];
+											else 
+												lcd_data = CPU_interface[71:68] - 4'b1001;
+										4'b0111://C
+											if (CPU_interface[63:60] <= 4'b1001) 
+												lcd_data = CPU_interface[63:60];
+											else 
+												lcd_data = CPU_interface[63:60] - 4'b1001;
+										4'b0110://B
+											if (CPU_interface[55:52] <= 4'b1001) 
+												lcd_data = CPU_interface[55:52];
+											else 
+												lcd_data = CPU_interface[55:52] - 4'b1001;
+										4'b0101://A
+											if (CPU_interface[47:44] <= 4'b1001) 
+												lcd_data = CPU_interface[47:44];
+											else 
+												lcd_data = CPU_interface[47:44] - 4'b1001;
+										4'b0100://Z
+											if (CPU_interface[39:36] <= 4'b1001) 
+												lcd_data = CPU_interface[39:36];
+											else 
+												lcd_data = CPU_interface[39:36] - 4'b1001;
+										4'b0011://W
+											if (CPU_interface[31:28] <= 4'b1001) 
+												lcd_data = CPU_interface[31:28];
+											else 
+												lcd_data = CPU_interface[31:28] - 4'b1001;
+										4'b0010://ST
+											if (CPU_interface[23:20] <= 4'b1001) 
+												lcd_data = CPU_interface[23:20];
+											else 
+												lcd_data = CPU_interface[23:20] - 4'b1001;
+										4'b0001://IR
+											if (CPU_interface[15:12] <= 4'b1001) 
+												lcd_data = CPU_interface[15:12];
+											else 
+												lcd_data = CPU_interface[15:12] - 4'b1001;
+										4'b0000://PC
+											if (CPU_interface[7:4] <= 4'b1001) 
+												lcd_data = CPU_interface[7:4];
+											else 
+												lcd_data = CPU_interface[7:4] - 4'b1001;
+								endcase
+
+								
+
 								//Space
-								4'b0110: lcd_data = 4'b0000;
+								4'b0110: lcd_data = `EMPTY_lower;
 
-								//Second addr Char
-								4'b0101: if (addrInput[3:0] <= 4'b1001) 
-										lcd_data = addrInput[3:0];
-									else 
-										lcd_data = addrInput[3:0] - 4'b1001;
+								//second Reg Name char
+								4'b0101: case(dbg_reg_addr)
+										4'b1011:lcd_data = `I_lower;//DI (data in)
+										4'b1010:lcd_data = `O_lower;//DO (data out)
+										4'b1001:lcd_data = `D_lower;//AD (address)
+										4'b1000:lcd_data = `P_lower;//SP
+										4'b0111:lcd_data = `EMPTY_lower;//C
+										4'b0110:lcd_data = `EMPTY_lower;//B
+										4'b0101:lcd_data = `EMPTY_lower;//A
+										4'b0100:lcd_data = `EMPTY_lower;//Z
+										4'b0011:lcd_data = `EMPTY_lower;//W
+										4'b0010:lcd_data = `T_lower;//ST
+										4'b0001:lcd_data = `R_lower;//IR
+										4'b0000:lcd_data = `C_lower;//PC
+								endcase
 
-								//First addr char
-								4'b0100: if (addrInput[7:4] <= 4'b1001) 
-										lcd_data = addrInput[7:4];
-									else 
-										lcd_data = addrInput[7:4] - 4'b1001;
-
+								//first Reg Name char
+								4'b0100: case(dbg_reg_addr)
+										4'b1011:lcd_data = `D_lower;//DI (data in)
+										4'b1010:lcd_data = `D_lower;//DO (data out)
+										4'b1001:lcd_data = `A_lower;//AD (address)
+										4'b1000:lcd_data = `S_lower;//SP
+										4'b0111:lcd_data = `C_lower;//C
+										4'b0110:lcd_data = `B_lower;//B
+										4'b0101:lcd_data = `A_lower;//A
+										4'b0100:lcd_data = `Z_lower;//Z
+										4'b0011:lcd_data = `W_lower;//W
+										4'b0010:lcd_data = `S_lower;//ST
+										4'b0001:lcd_data = `I_lower;//IR
+										4'b0000:lcd_data = `P_lower;//PC
+								endcase
+										
+										
 								//Space
-								4'b0011: lcd_data = 4'b0010;
+								4'b0011: lcd_data = `EMPTY_lower;
 
-								//Char M
+								//Char P
 								4'b0010: 
 										lcd_data = `P_lower;
-								//Char R
+								//Char C
 								4'b0001: 
 										lcd_data = `C_lower;
 										

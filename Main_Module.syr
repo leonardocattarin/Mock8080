@@ -1,0 +1,756 @@
+Release 14.7 - xst P.20131013 (lin64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+--> 
+Parameter TMPDIR set to xst/projnav.tmp
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.03 secs
+ 
+--> 
+Parameter xsthdpdir set to xst
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.03 secs
+ 
+--> 
+Reading design: Main_Module.prj
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Compilation
+  3) Design Hierarchy Analysis
+  4) HDL Analysis
+  5) HDL Synthesis
+     5.1) HDL Synthesis Report
+  6) Advanced HDL Synthesis
+     6.1) Advanced HDL Synthesis Report
+  7) Low Level Synthesis
+  8) Partition Report
+  9) Final Report
+	9.1) Device utilization summary
+	9.2) Partition Resource Summary
+	9.3) TIMING REPORT
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "Main_Module.prj"
+Input Format                       : mixed
+Ignore Synthesis Constraint File   : NO
+
+---- Target Parameters
+Output File Name                   : "Main_Module"
+Output Format                      : NGC
+Target Device                      : xc3s700an-4-fgg484
+
+---- Source Options
+Top Module Name                    : Main_Module
+Automatic FSM Extraction           : YES
+FSM Encoding Algorithm             : Auto
+Safe Implementation                : No
+FSM Style                          : LUT
+RAM Extraction                     : Yes
+RAM Style                          : Auto
+ROM Extraction                     : Yes
+Mux Style                          : Auto
+Decoder Extraction                 : YES
+Priority Encoder Extraction        : Yes
+Shift Register Extraction          : YES
+Logical Shifter Extraction         : YES
+XOR Collapsing                     : YES
+ROM Style                          : Auto
+Mux Extraction                     : Yes
+Resource Sharing                   : YES
+Asynchronous To Synchronous        : NO
+Multiplier Style                   : Auto
+Automatic Register Balancing       : No
+
+---- Target Options
+Add IO Buffers                     : YES
+Global Maximum Fanout              : 500
+Add Generic Clock Buffer(BUFG)     : 24
+Register Duplication               : YES
+Slice Packing                      : YES
+Optimize Instantiated Primitives   : NO
+Use Clock Enable                   : Yes
+Use Synchronous Set                : Yes
+Use Synchronous Reset              : Yes
+Pack IO Registers into IOBs        : Auto
+Equivalent register Removal        : YES
+
+---- General Options
+Optimization Goal                  : Speed
+Optimization Effort                : 1
+Keep Hierarchy                     : No
+Netlist Hierarchy                  : As_Optimized
+RTL Output                         : Yes
+Global Optimization                : AllClockNets
+Read Cores                         : YES
+Write Timing Constraints           : NO
+Cross Clock Analysis               : NO
+Hierarchy Separator                : /
+Bus Delimiter                      : <>
+Case Specifier                     : Maintain
+Slice Utilization Ratio            : 100
+BRAM Utilization Ratio             : 100
+Verilog 2001                       : YES
+Auto BRAM Packing                  : NO
+Slice Utilization Ratio Delta      : 5
+
+=========================================================================
+
+
+=========================================================================
+*                          HDL Compilation                              *
+=========================================================================
+Compiling verilog file "module_RAM.v" in library work
+Compiling verilog file "module_lcd_driver_dbg.v" in library work
+Module <Module_BRAM_256_byte> compiled
+Compiling verilog file "module_knob_driver.v" in library work
+Module <LCD_Driver_Dbg> compiled
+Compiling verilog file "module_CPU.v" in library work
+Module <module_knob_driver> compiled
+Compiling verilog file "chipStore.v" in library work
+Module <Module_CPU> compiled
+Module <Module_FrequencyDivider> compiled
+Module <Module_Counter_8_bit> compiled
+Module <Module_SynchroCounter_8_bit_SR> compiled
+Module <Module_SynchroCounter_8_bit_SR_bidirectional> compiled
+Module <Module_Multiplexer_2_input_8_bit_sync> compiled
+Module <Module_Monostable> compiled
+Module <Module_ToggleFlipFlop> compiled
+Compiling verilog file "main_Module.v" in library work
+Module <Module_Latch_16_bit> compiled
+Module <Main_Module> compiled
+No errors in compilation
+Analysis of file <"Main_Module.prj"> succeeded.
+ 
+
+=========================================================================
+*                     Design Hierarchy Analysis                         *
+=========================================================================
+Analyzing hierarchy for module <Main_Module> in library <work>.
+
+Analyzing hierarchy for module <Module_Monostable> in library <work>.
+
+Analyzing hierarchy for module <module_knob_driver> in library <work>.
+
+Analyzing hierarchy for module <Module_SynchroCounter_8_bit_SR_bidirectional> in library <work>.
+
+Analyzing hierarchy for module <LCD_Driver_Dbg> in library <work>.
+
+Analyzing hierarchy for module <Module_FrequencyDivider> in library <work>.
+
+Analyzing hierarchy for module <Module_BRAM_256_byte> in library <work>.
+
+Analyzing hierarchy for module <Module_CPU> in library <work>.
+
+
+=========================================================================
+*                            HDL Analysis                               *
+=========================================================================
+Analyzing top module <Main_Module>.
+WARNING:Xst:852 - "main_Module.v" line 103: Unconnected input port 'CPU_interface' of instance 'lcd_driver' is tied to GND.
+WARNING:Xst:852 - "main_Module.v" line 103: Unconnected input port 'dbg_reg_addr' of instance 'lcd_driver' is tied to GND.
+Module <Main_Module> is correct for synthesis.
+ 
+Analyzing module <Module_Monostable> in library <work>.
+Module <Module_Monostable> is correct for synthesis.
+ 
+Analyzing module <module_knob_driver> in library <work>.
+Module <module_knob_driver> is correct for synthesis.
+ 
+Analyzing module <Module_SynchroCounter_8_bit_SR_bidirectional> in library <work>.
+Module <Module_SynchroCounter_8_bit_SR_bidirectional> is correct for synthesis.
+ 
+Analyzing module <LCD_Driver_Dbg> in library <work>.
+Module <LCD_Driver_Dbg> is correct for synthesis.
+ 
+Analyzing module <Module_FrequencyDivider> in library <work>.
+Module <Module_FrequencyDivider> is correct for synthesis.
+ 
+Analyzing module <Module_BRAM_256_byte> in library <work>.
+INFO:Xst:2546 - "module_RAM.v" line 48: reading initialization file "memory.data".
+Module <Module_BRAM_256_byte> is correct for synthesis.
+ 
+Analyzing module <Module_CPU> in library <work>.
+Module <Module_CPU> is correct for synthesis.
+ 
+
+=========================================================================
+*                           HDL Synthesis                               *
+=========================================================================
+
+Performing bidirectional port resolution...
+INFO:Xst:2679 - Register <write_en> in unit <Module_CPU> has a constant value of 0 during circuit operation. The register is replaced by logic.
+
+Synthesizing Unit <Module_Monostable>.
+    Related source file is "chipStore.v".
+    Found 1-bit register for signal <monostable_output>.
+    Found 28-bit down counter for signal <counter>.
+    Found 28-bit subtractor for signal <counter$sub0000> created at line 217.
+    Found 1-bit register for signal <monostable_input_old>.
+    Summary:
+	inferred   1 Counter(s).
+	inferred   2 D-type flip-flop(s).
+	inferred   1 Adder/Subtractor(s).
+Unit <Module_Monostable> synthesized.
+
+
+Synthesizing Unit <module_knob_driver>.
+    Related source file is "module_knob_driver.v".
+    Found 1-bit register for signal <pulse>.
+    Found 1-bit register for signal <direction>.
+    Found 1-bit register for signal <rot_A_old>.
+    Found 1-bit register for signal <rot_B_old>.
+    Summary:
+	inferred   4 D-type flip-flop(s).
+Unit <module_knob_driver> synthesized.
+
+
+Synthesizing Unit <Module_SynchroCounter_8_bit_SR_bidirectional>.
+    Related source file is "chipStore.v".
+    Found 8-bit updown counter for signal <out>.
+    Found 1-bit register for signal <clk_in_old>.
+    Summary:
+	inferred   1 Counter(s).
+	inferred   1 D-type flip-flop(s).
+Unit <Module_SynchroCounter_8_bit_SR_bidirectional> synthesized.
+
+
+Synthesizing Unit <LCD_Driver_Dbg>.
+    Related source file is "module_lcd_driver_dbg.v".
+    Found finite state machine <FSM_0> for signal <initializeLabel>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 7                                              |
+    | Inputs             | 3                                              |
+    | Outputs            | 3                                              |
+    | Clock              | qzt_clk                   (rising_edge)        |
+    | Power Up State     | 01                                             |
+    | Encoding           | automatic                                      |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found 4-bit register for signal <lcd_data>.
+    Found 2-bit register for signal <lcd_flags>.
+    Found 22-bit adder for signal <$add0000> created at line 118.
+    Found 22-bit adder for signal <$add0001> created at line 696.
+    Found 22-bit register for signal <counter>.
+    Found 4-bit comparator lessequal for signal <counter$cmp_le0000> created at line 211.
+    Summary:
+	inferred   1 Finite State Machine(s).
+	inferred  28 D-type flip-flop(s).
+	inferred   2 Adder/Subtractor(s).
+	inferred   1 Comparator(s).
+Unit <LCD_Driver_Dbg> synthesized.
+
+
+Synthesizing Unit <Module_FrequencyDivider>.
+    Related source file is "chipStore.v".
+    Found 1-bit register for signal <clk_out>.
+    Found 32-bit subtractor for signal <$sub0000> created at line 20.
+    Found 30-bit up counter for signal <counter>.
+    Found 32-bit comparator greatequal for signal <counter$cmp_ge0000> created at line 20.
+    Summary:
+	inferred   1 Counter(s).
+	inferred   1 D-type flip-flop(s).
+	inferred   1 Adder/Subtractor(s).
+	inferred   1 Comparator(s).
+Unit <Module_FrequencyDivider> synthesized.
+
+
+Synthesizing Unit <Module_BRAM_256_byte>.
+    Related source file is "module_RAM.v".
+    Found 256x8-bit dual-port RAM <Mram_RAM> for signal <RAM>.
+    Found 8-bit register for signal <data_out>.
+    Found 8-bit register for signal <dbg_data_out>.
+    Found 1-bit register for signal <clk_in_old>.
+    Summary:
+	inferred   1 RAM(s).
+	inferred  17 D-type flip-flop(s).
+Unit <Module_BRAM_256_byte> synthesized.
+
+
+Synthesizing Unit <Module_CPU>.
+    Related source file is "module_CPU.v".
+WARNING:Xst:1305 - Output <data_out> is never assigned. Tied to value 00000000.
+WARNING:Xst:646 - Signal <carry_flg> is assigned but never used. This unconnected signal will be trimmed during the optimization process.
+WARNING:Xst:1780 - Signal <Z> is never used or assigned. This unconnected signal will be trimmed during the optimization process.
+WARNING:Xst:1780 - Signal <W> is never used or assigned. This unconnected signal will be trimmed during the optimization process.
+WARNING:Xst:1780 - Signal <SP> is never used or assigned. This unconnected signal will be trimmed during the optimization process.
+WARNING:Xst:1780 - Signal <C> is never used or assigned. This unconnected signal will be trimmed during the optimization process.
+    Found finite state machine <FSM_1> for signal <state>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 12                                             |
+    | Inputs             | 4                                              |
+    | Outputs            | 6                                              |
+    | Clock              | clk_qzt                   (rising_edge)        |
+    | Clock enable       | state$and0000             (positive)           |
+    | Power Up State     | 000                                            |
+    | Encoding           | automatic                                      |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found 8-bit register for signal <data_addr>.
+    Found 8-bit register for signal <A>.
+    Found 8-bit adder carry out for signal <AUX_15$addsub0000>.
+    Found 8-bit register for signal <B>.
+    Found 1-bit register for signal <clk_in_old>.
+    Found 8-bit register for signal <IR>.
+    Found 8-bit register for signal <PC>.
+    Found 8-bit adder for signal <PC$add0000> created at line 121.
+    Found 8-bit adder for signal <PC$addsub0000> created at line 110.
+    Summary:
+	inferred   1 Finite State Machine(s).
+	inferred  41 D-type flip-flop(s).
+	inferred   3 Adder/Subtractor(s).
+Unit <Module_CPU> synthesized.
+
+
+Synthesizing Unit <Main_Module>.
+    Related source file is "main_Module.v".
+WARNING:Xst:647 - Input <BTN_EAST> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <SW> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <BTN_SOUTH> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <ROT_CENTER> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:1780 - Signal <defaultN> is never used or assigned. This unconnected signal will be trimmed during the optimization process.
+Unit <Main_Module> synthesized.
+
+
+=========================================================================
+HDL Synthesis Report
+
+Macro Statistics
+# RAMs                                                 : 1
+ 256x8-bit dual-port RAM                               : 1
+# Adders/Subtractors                                   : 8
+ 22-bit adder                                          : 2
+ 28-bit subtractor                                     : 2
+ 32-bit subtractor                                     : 1
+ 8-bit adder                                           : 2
+ 8-bit adder carry out                                 : 1
+# Counters                                             : 4
+ 28-bit down counter                                   : 2
+ 30-bit up counter                                     : 1
+ 8-bit updown counter                                  : 1
+# Registers                                            : 43
+ 1-bit register                                        : 34
+ 2-bit register                                        : 1
+ 4-bit register                                        : 1
+ 8-bit register                                        : 7
+# Comparators                                          : 2
+ 32-bit comparator greatequal                          : 1
+ 4-bit comparator lessequal                            : 1
+
+=========================================================================
+
+=========================================================================
+*                       Advanced HDL Synthesis                          *
+=========================================================================
+
+Analyzing FSM <FSM_1> for best encoding.
+Optimizing FSM <Mock_CPU/state/FSM> on signal <state[1:4]> with one-hot encoding.
+-------------------
+ State | Encoding
+-------------------
+ 000   | 0001
+ 001   | 1000
+ 010   | 0100
+ 011   | 0010
+-------------------
+Analyzing FSM <FSM_0> for best encoding.
+Optimizing FSM <lcd_driver/initializeLabel/FSM> on signal <initializeLabel[1:2]> with gray encoding.
+-------------------
+ State | Encoding
+-------------------
+ 00    | 10
+ 01    | 00
+ 10    | 01
+ 11    | 11
+-------------------
+WARNING:Xst:1290 - Hierarchical block <monostable_knob_A> is unconnected in block <Main_Module>.
+   It will be removed from the design.
+WARNING:Xst:1290 - Hierarchical block <monostable_knob_B> is unconnected in block <Main_Module>.
+   It will be removed from the design.
+WARNING:Xst:1290 - Hierarchical block <knob_driver> is unconnected in block <Main_Module>.
+   It will be removed from the design.
+WARNING:Xst:1290 - Hierarchical block <knob_counter> is unconnected in block <Main_Module>.
+   It will be removed from the design.
+WARNING:Xst:1290 - Hierarchical block <custom_clk_gen> is unconnected in block <Main_Module>.
+   It will be removed from the design.
+WARNING:Xst:1290 - Hierarchical block <RAM> is unconnected in block <Main_Module>.
+   It will be removed from the design.
+WARNING:Xst:1290 - Hierarchical block <Mock_CPU> is unconnected in block <Main_Module>.
+   It will be removed from the design.
+WARNING:Xst:2404 -  FFs/Latches <IR<7:0>> (without init value) have a constant value of 0 in block <Module_CPU>.
+
+Synthesizing (advanced) Unit <Main_Module>.
+INFO:Xst:3038 - The RAM <RAM/Mram_RAM> appears to be read-only. If that was not your intent please check the write enable description.
+INFO:Xst:3226 - The RAM <RAM/Mram_RAM> will be implemented as a BLOCK RAM, absorbing the following register(s): <RAM/dbg_data_out>
+    -----------------------------------------------------------------------
+    | ram_type           | Block                               |          |
+    -----------------------------------------------------------------------
+    | Port A                                                              |
+    |     aspect ratio   | 256-word x 8-bit                    |          |
+    |     mode           | read-first                          |          |
+    |     clkA           | connected to signal <CLK_50M>       | rise     |
+    |     weA            | connected to signal <GND>           | high     |
+    |     addrA          | connected to signal <data_addr>     |          |
+    |     diA            | connected to signal <GND>           |          |
+    -----------------------------------------------------------------------
+    | optimization       | speed                               |          |
+    -----------------------------------------------------------------------
+    | Port B                                                              |
+    |     aspect ratio   | 256-word x 8-bit                    |          |
+    |     mode           | write-first                         |          |
+    |     clkB           | connected to signal <CLK_50M>       | rise     |
+    |     addrB          | connected to signal <w_dbg_addr_RAM> |          |
+    |     doB            | connected to signal <w_dbg_data_RAM> |          |
+    -----------------------------------------------------------------------
+    | optimization       | speed                               |          |
+    -----------------------------------------------------------------------
+Unit <Main_Module> synthesized (advanced).
+
+=========================================================================
+Advanced HDL Synthesis Report
+
+Macro Statistics
+# RAMs                                                 : 1
+ 256x8-bit dual-port block RAM                         : 1
+# Adders/Subtractors                                   : 6
+ 22-bit adder                                          : 2
+ 28-bit subtractor                                     : 2
+ 32-bit subtractor                                     : 1
+ 8-bit adder                                           : 1
+# Counters                                             : 4
+ 28-bit down counter                                   : 2
+ 30-bit up counter                                     : 1
+ 8-bit updown counter                                  : 1
+# Registers                                            : 61
+ Flip-Flops                                            : 61
+# Comparators                                          : 2
+ 32-bit comparator greatequal                          : 1
+ 4-bit comparator lessequal                            : 1
+
+=========================================================================
+
+=========================================================================
+*                         Low Level Synthesis                           *
+=========================================================================
+WARNING:Xst:1293 - FF/Latch <FSM_FFd3> has a constant value of 0 in block <FSM_1-parent>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:2677 - Node <counter_21> of sequential type is unconnected in block <LCD_Driver_Dbg>.
+
+Optimizing unit <Main_Module> ...
+
+Optimizing unit <Module_Monostable> ...
+
+Optimizing unit <LCD_Driver_Dbg> ...
+WARNING:Xst:2677 - Node <Mock_CPU/data_addr_0> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <Mock_CPU/data_addr_1> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <Mock_CPU/data_addr_2> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <Mock_CPU/data_addr_3> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <Mock_CPU/data_addr_4> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <Mock_CPU/data_addr_5> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <Mock_CPU/data_addr_6> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <Mock_CPU/data_addr_7> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <Mock_CPU/PC_0> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <Mock_CPU/PC_1> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <Mock_CPU/PC_2> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <Mock_CPU/PC_3> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <Mock_CPU/PC_4> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <Mock_CPU/PC_5> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <Mock_CPU/PC_6> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <Mock_CPU/PC_7> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <Mock_CPU/clk_in_old> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <knob_counter/clk_in_old> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/clk_out> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <RAM/Mram_RAM> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_0> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_1> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_2> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_3> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_4> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_5> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_6> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_7> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_8> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_9> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_10> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_11> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_12> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_13> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_14> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_15> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_16> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_17> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_18> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_19> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_20> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_21> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_22> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_23> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_24> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_25> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_26> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_27> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_28> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <custom_clk_gen/counter_29> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <knob_counter/out_0> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <knob_counter/out_1> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <knob_counter/out_2> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <knob_counter/out_3> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <knob_counter/out_4> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <knob_counter/out_5> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <knob_counter/out_6> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <knob_counter/out_7> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <Mock_CPU/state_FSM_FFd2> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <Mock_CPU/state_FSM_FFd1> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <Mock_CPU/state_FSM_FFd4> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <knob_driver/rot_B_old> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <knob_driver/rot_A_old> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <knob_driver/direction> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <knob_driver/pulse> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_27> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_26> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_25> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_24> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_23> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_22> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_21> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_20> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_19> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_18> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_17> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_16> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_15> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_14> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_13> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_12> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_11> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_10> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_9> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_8> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_7> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_6> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_5> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_4> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_3> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_2> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_1> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/counter_0> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/monostable_input_old> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_B/monostable_output> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_27> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_26> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_25> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_24> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_23> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_22> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_21> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_20> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_19> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_18> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_17> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_16> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_15> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_14> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_13> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_12> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_11> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_10> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_9> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_8> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_7> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_6> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_5> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_4> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_3> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_2> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_1> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/counter_0> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/monostable_input_old> of sequential type is unconnected in block <Main_Module>.
+WARNING:Xst:2677 - Node <monostable_knob_A/monostable_output> of sequential type is unconnected in block <Main_Module>.
+
+Mapping all equations...
+Building and optimizing final netlist ...
+Found area constraint ratio of 100 (+ 5) on block Main_Module, actual ratio is 1.
+
+Final Macro Processing ...
+
+=========================================================================
+Final Register Report
+
+Macro Statistics
+# Registers                                            : 29
+ Flip-Flops                                            : 29
+
+=========================================================================
+
+=========================================================================
+*                           Partition Report                            *
+=========================================================================
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+=========================================================================
+*                            Final Report                               *
+=========================================================================
+Final Results
+RTL Top Level Output File Name     : Main_Module.ngr
+Top Level Output File Name         : Main_Module
+Output Format                      : NGC
+Optimization Goal                  : Speed
+Keep Hierarchy                     : No
+
+Design Statistics
+# IOs                              : 29
+
+Cell Usage :
+# BELS                             : 274
+#      GND                         : 1
+#      INV                         : 2
+#      LUT1                        : 40
+#      LUT2                        : 21
+#      LUT2_D                      : 3
+#      LUT2_L                      : 2
+#      LUT3                        : 13
+#      LUT3_D                      : 5
+#      LUT3_L                      : 2
+#      LUT4                        : 64
+#      LUT4_D                      : 14
+#      LUT4_L                      : 10
+#      MUXCY                       : 40
+#      MUXF5                       : 14
+#      VCC                         : 1
+#      XORCY                       : 42
+# FlipFlops/Latches                : 29
+#      FD                          : 23
+#      FDS                         : 6
+# Clock Buffers                    : 1
+#      BUFGP                       : 1
+# IO Buffers                       : 19
+#      OBUF                        : 19
+=========================================================================
+
+Device utilization summary:
+---------------------------
+
+Selected Device : 3s700anfgg484-4 
+
+ Number of Slices:                       91  out of   5888     1%  
+ Number of Slice Flip Flops:             29  out of  11776     0%  
+ Number of 4 input LUTs:                176  out of  11776     1%  
+ Number of IOs:                          29
+ Number of bonded IOBs:                  20  out of    372     5%  
+ Number of GCLKs:                         1  out of     24     4%  
+
+---------------------------
+Partition Resource Summary:
+---------------------------
+
+  No Partitions were found in this design.
+
+---------------------------
+
+
+=========================================================================
+TIMING REPORT
+
+NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
+      FOR ACCURATE TIMING INFORMATION PLEASE REFER TO THE TRACE REPORT
+      GENERATED AFTER PLACE-and-ROUTE.
+
+Clock Information:
+------------------
+-----------------------------------+------------------------+-------+
+Clock Signal                       | Clock buffer(FF name)  | Load  |
+-----------------------------------+------------------------+-------+
+CLK_50M                            | BUFGP                  | 29    |
+-----------------------------------+------------------------+-------+
+
+Asynchronous Control Signals Information:
+----------------------------------------
+No asynchronous control signals found in this design
+
+Timing Summary:
+---------------
+Speed Grade: -4
+
+   Minimum period: 9.093ns (Maximum Frequency: 109.975MHz)
+   Minimum input arrival time before clock: No path found
+   Maximum output required time after clock: 5.642ns
+   Maximum combinational path delay: No path found
+
+Timing Detail:
+--------------
+All values displayed in nanoseconds (ns)
+
+=========================================================================
+Timing constraint: Default period analysis for Clock 'CLK_50M'
+  Clock period: 9.093ns (frequency: 109.975MHz)
+  Total number of paths / destination ports: 2937 / 35
+-------------------------------------------------------------------------
+Delay:               9.093ns (Levels of Logic = 5)
+  Source:            lcd_driver/counter_3 (FF)
+  Destination:       lcd_driver/lcd_data_1 (FF)
+  Source Clock:      CLK_50M rising
+  Destination Clock: CLK_50M rising
+
+  Data Path: lcd_driver/counter_3 to lcd_driver/lcd_data_1
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FD:C->Q               4   0.591   0.730  lcd_driver/counter_3 (lcd_driver/counter_3)
+     LUT4_D:I0->O          4   0.648   0.730  lcd_driver/lcd_data_or00012125 (lcd_driver/lcd_data_or00012125)
+     LUT4:I0->O            9   0.648   0.823  lcd_driver/initializeLabel_cmp_eq0000111 (lcd_driver/N53)
+     LUT4:I3->O           17   0.648   1.054  lcd_driver/initializeLabel_cmp_eq00001 (lcd_driver/initializeLabel_cmp_eq0000)
+     LUT4_D:I3->O          5   0.648   0.636  lcd_driver/lcd_flags_mux0000<0>1124 (lcd_driver/N10)
+     LUT4:I3->O            1   0.648   0.420  lcd_driver/lcd_data_mux0000<1>0 (lcd_driver/lcd_data_mux0000<1>0)
+     FDS:S                     0.869          lcd_driver/lcd_data_1
+    ----------------------------------------
+    Total                      9.093ns (4.700ns logic, 4.393ns route)
+                                       (51.7% logic, 48.3% route)
+
+=========================================================================
+Timing constraint: Default OFFSET OUT AFTER for Clock 'CLK_50M'
+  Total number of paths / destination ports: 6 / 6
+-------------------------------------------------------------------------
+Offset:              5.642ns (Levels of Logic = 1)
+  Source:            lcd_driver/lcd_flags_1 (FF)
+  Destination:       LCD_RS (PAD)
+  Source Clock:      CLK_50M rising
+
+  Data Path: lcd_driver/lcd_flags_1 to LCD_RS
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FD:C->Q               3   0.591   0.531  lcd_driver/lcd_flags_1 (lcd_driver/lcd_flags_1)
+     OBUF:I->O                 4.520          LCD_RS_OBUF (LCD_RS)
+    ----------------------------------------
+    Total                      5.642ns (5.111ns logic, 0.531ns route)
+                                       (90.6% logic, 9.4% route)
+
+=========================================================================
+
+
+Total REAL time to Xst completion: 5.00 secs
+Total CPU time to Xst completion: 4.24 secs
+ 
+--> 
+
+
+Total memory usage is 520724 kilobytes
+
+Number of errors   :    0 (   0 filtered)
+Number of warnings :  159 (   0 filtered)
+Number of infos    :    4 (   0 filtered)
+
