@@ -1,7 +1,0 @@
-xst -intstyle ise -ifn "/home/leorando/Lab_Advanced_Electronics/Microprocessor/Mock8080/Main_Module.xst" -ofn "/home/leorando/Lab_Advanced_Electronics/Microprocessor/Mock8080/Main_Module.syr" 
-xst -intstyle ise -ifn "/home/leorando/Lab_Advanced_Electronics/Microprocessor/Mock8080/Main_Module.xst" -ofn "/home/leorando/Lab_Advanced_Electronics/Microprocessor/Mock8080/Main_Module.syr" 
-ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc Soft_Cabling.ucf -p xc3s700an-fgg484-4 Main_Module.ngc Main_Module.ngd  
-map -intstyle ise -p xc3s700an-fgg484-4 -cm area -ir off -pr b -c 100 -o Main_Module_map.ncd Main_Module.ngd Main_Module.pcf 
-par -w -intstyle ise -ol high -t 1 Main_Module_map.ncd Main_Module.ncd Main_Module.pcf 
-trce -intstyle ise -e 3 -s 4 -n 3 -xml Main_Module.twx Main_Module.ncd -o Main_Module.twr Main_Module.pcf -ucf Soft_Cabling.ucf 
-bitgen -intstyle ise -f Main_Module.ut Main_Module.ncd 

@@ -1,6 +1,0 @@
-verilog work "module_RAM.v"
-verilog work "module_lcd_driver_dbg.v"
-verilog work "module_knob_driver.v"
-verilog work "module_CPU.v"
-verilog work "chipStore.v"
-verilog work "main_Module.v"
