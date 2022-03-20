@@ -63,6 +63,7 @@ input		qzt_clk;
 input	[7:0]	addrInput;
 input	[7:0]	dataInput;
 input		switchFlag;
+
 input	[95:0]	CPU_interface;
 input 	[3:0]	dbg_reg_addr;
 
@@ -227,7 +228,7 @@ always @(posedge qzt_clk) begin
 										lcd_data = 4'b0100;
 							
 								//space
-								4'b0110: lcd_data = 4'b0010;
+								4'b0110: lcd_data = `EMPTY_upper;
 
 								//second addr char
 								4'b0101: if (addrInput[3:0] <= 4'b1001) 
@@ -241,7 +242,7 @@ always @(posedge qzt_clk) begin
 										lcd_data = 4'b0100;
 
 								//Space
-								4'b0011: lcd_data = 4'b0010;
+								4'b0011: lcd_data = `EMPTY_upper;
 
 								//Char M
 								4'b0010: 
@@ -275,7 +276,7 @@ always @(posedge qzt_clk) begin
 										lcd_data = dataInput[7:4] - 4'b1001;
 							
 								//Space
-								4'b0110: lcd_data = 4'b0000;
+								4'b0110: lcd_data = `EMPTY_lower;
 
 								//Second addr Char
 								4'b0101: if (addrInput[3:0] <= 4'b1001) 
@@ -290,7 +291,7 @@ always @(posedge qzt_clk) begin
 										lcd_data = addrInput[7:4] - 4'b1001;
 
 								//Space
-								4'b0011: lcd_data = 4'b0010;
+								4'b0011: lcd_data = `EMPTY_lower;
 
 								//Char M
 								4'b0010: 
