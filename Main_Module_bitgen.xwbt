@@ -1,8 +1,0 @@
-INTSTYLE=ise
-INFILE=/home/leorando/Lab_Advanced_Electronics/Microprocessor/Mock8080/Main_Module.ncd
-OUTFILE=/home/leorando/Lab_Advanced_Electronics/Microprocessor/Mock8080/Main_Module.bit
-FAMILY=Spartan3A and Spartan3AN
-PART=xc3s700an-4fgg484
-WORKINGDIR=/home/leorando/Lab_Advanced_Electronics/Microprocessor/Mock8080
-LICENSE=WebPack
-USER_INFO=211072777_0_0_836

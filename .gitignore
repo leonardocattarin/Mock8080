@@ -1,5 +1,5 @@
-.xwbt
-.ncd
-.gise
+*.xwbt
+*.ncd
+*.gise
 /_xmsgs
 /iseconfig
