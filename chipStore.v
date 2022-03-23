@@ -113,11 +113,13 @@ endmodule
 
 
 /**************************************/
-/*** Module_SynchroCounter_8_bit_SR_bidirectional ***/
+/*** Module_Ladder_8_bit_SR ***/
 /**************************************/
 
-module	Module_SynchroCounter_8_bit_SR_bidirectional	(	qzt_clk,
+module	Module_Ladder_8_bit_SR	(	qzt_clk,
 						clk_in,
+						pulse_up,
+						pulse_down,
 						reset,
 						set,
 						presetValue,
@@ -147,12 +149,11 @@ always @(posedge qzt_clk) begin
 		out <= presetValue;
 
 	end else if (!clk_in_old & clk_in) begin
-		 if (direction) begin
-				out <= out + 1;
-		end else begin
+		 if (pulse_up) begin
+			out <= out + 1;
+		end else if (pulse_down) begin
 			out <= out - 1;
 		end
-			
 	end
 
 	clk_in_old <= clk_in;
@@ -227,9 +228,9 @@ end
 endmodule
 
 /*****************************/
-/*** Module_MonostableHold_v2 ***/
+/*** Module_Monostable_enforced ***/
 /*****************************/
-//implements debouncing also for pushbutton rise
+//implements debouncing also for button risetime
 
 `define		defaultN 	28'b0000000011110100001001000000	//	10^6 ===> 20 ms
 

@@ -51,7 +51,7 @@ module	LCD_Driver_Dbg	(	qzt_clk,
 					switchFlag,
 
 					CPU_interface,
-					dbg_reg_addr,
+					dbg_reg,
 
 					lcd_flags,
 					lcd_data);
@@ -65,7 +65,7 @@ input	[7:0]	dataInput;
 input		switchFlag;
 
 input	[95:0]	CPU_interface;
-input 	[3:0]	dbg_reg_addr;
+input 	[3:0]	dbg_reg;
 
 /*****************************/
 /*      	Output		 */
@@ -321,7 +321,7 @@ always @(posedge qzt_clk) begin
 							case (counter[15:12])
 
 								//Second Data char
-								4'b1000: case(dbg_reg_addr)
+								4'b1000: case(dbg_reg)
 										4'b1011://DI (data in)
 											if (CPU_interface[91:88] <= 4'b1001) 
 												lcd_data = 4'b0011;
@@ -385,7 +385,7 @@ always @(posedge qzt_clk) begin
 								endcase
 
 								//first Data char
-								4'b0111: case(dbg_reg_addr)
+								4'b0111: case(dbg_reg)
 										4'b1011://DI (data in)
 											if (CPU_interface[95:92] <= 4'b1001) 
 												lcd_data = 4'b0011;
@@ -452,7 +452,7 @@ always @(posedge qzt_clk) begin
 								4'b0110: lcd_data = `EMPTY_upper;
 
 								//second Reg Name char
-								4'b0101: case(dbg_reg_addr)
+								4'b0101: case(dbg_reg)
 										4'b1011:lcd_data = `I_upper;//DI (data in)
 										4'b1010:lcd_data = `O_upper;//DO (data out)
 										4'b1001:lcd_data = `D_upper;//AD (address)
@@ -468,7 +468,7 @@ always @(posedge qzt_clk) begin
 								endcase
 
 								//first Reg Name char
-								4'b0100: case(dbg_reg_addr)
+								4'b0100: case(dbg_reg)
 										4'b1011:lcd_data = `D_upper;//DI (data in)
 										4'b1010:lcd_data = `D_upper;//DO (data out)
 										4'b1001:lcd_data = `A_upper;//AD (address)
@@ -506,7 +506,7 @@ always @(posedge qzt_clk) begin
 
 								//Second Data char
 								4'b1000: begin
-											case(dbg_reg_addr)
+											case(dbg_reg)
 											4'b1011://DI (data in)
 												if (CPU_interface[91:88] <= 4'b1001) 
 													lcd_data = CPU_interface[91:88];
@@ -573,7 +573,7 @@ always @(posedge qzt_clk) begin
 				 				end
 
 								//first Data char
-								4'b0111: case(dbg_reg_addr)
+								4'b0111: case(dbg_reg)
 										4'b1011://DI (data in)
 											if (CPU_interface[95:92] <= 4'b1001) 
 												lcd_data = CPU_interface[95:92];
@@ -642,7 +642,7 @@ always @(posedge qzt_clk) begin
 								4'b0110: lcd_data = `EMPTY_lower;
 
 								//second Reg Name char
-								4'b0101: case(dbg_reg_addr)
+								4'b0101: case(dbg_reg)
 										4'b1011:lcd_data = `I_lower;//DI (data in)
 										4'b1010:lcd_data = `O_lower;//DO (data out)
 										4'b1001:lcd_data = `D_lower;//AD (address)
@@ -658,7 +658,7 @@ always @(posedge qzt_clk) begin
 								endcase
 
 								//first Reg Name char
-								4'b0100: case(dbg_reg_addr)
+								4'b0100: case(dbg_reg)
 										4'b1011:lcd_data = `D_lower;//DI (data in)
 										4'b1010:lcd_data = `D_lower;//DO (data out)
 										4'b1001:lcd_data = `A_lower;//AD (address)

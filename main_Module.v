@@ -3,7 +3,7 @@
 module Main_Module	(	CLK_50M, 
 				SW, 
 				LED,
-				BTN_SOUTH, BTN_EAST,
+				BTN_SOUTH, BTN_EAST, BTN_NORTH,
 				ROT_A, ROT_B, ROT_CENTER,
 
 				LCD_DB, LCD_E, LCD_RS, LCD_RW,
@@ -15,6 +15,7 @@ module Main_Module	(	CLK_50M,
 input		CLK_50M;
 
 input 		BTN_SOUTH;
+input 		BTN_NORTH;
 input 		BTN_EAST;
 
 input 		ROT_A;
@@ -42,11 +43,14 @@ wire w_direction;
 wire w_stable_ROT_A;
 wire w_stable_ROT_B;
 wire w_stable_BTN_EAST;
+wire w_stable_BTN_NORTH;
+wire w_stable_BTN_SOUTH;
 
 //wire for choosing register visualization
 wire [3:0] w_CPU_reg;
 
-wire custom_clk;
+wire w_custom_clk;
+wire w_dbg_clk;
 
 wire [7:0] data_CPU_2_RAM;
 wire [7:0] data_RAM_2_CPU;
@@ -67,10 +71,10 @@ buf(LED[0],w_stable_BTN_EAST);
 
 
 
-/**********************************/
-/*** Modules for Knob Output ***/
-/**********************************/
-
+/************************/
+/*** Modules for Knob ***/
+/************************/
+/*
 //Two monostables for the knob inputs
 Module_Monostable_enforced	monostable_knob_A (	.clk_in(CLK_50M),
 					.monostable_input(ROT_A),
@@ -104,14 +108,15 @@ Module_SynchroCounter_8_bit_SR_bidirectional knob_counter	(	.qzt_clk(CLK_50M),
 						.direction(w_direction),
 
 						.out(w_dbg_addr_RAM));	
-
+*/
 	
 /**********************************/
 /*** 		LCD Driver 			***/
 /**********************************/
 
-//shows addres and data in Hexadecimal format
-//switchflag reference
+//shows Debug info for RAM and CPU
+//Datas are shown in Hex format
+//CPU switchflag reference
 /*
 0000 -> PC
 0001 -> IR
@@ -127,15 +132,16 @@ Module_SynchroCounter_8_bit_SR_bidirectional knob_counter	(	.qzt_clk(CLK_50M),
 1011 -> Data_in
 */
 LCD_Driver_Dbg lcd_driver	(	.qzt_clk(CLK_50M),
+					.switchFlag(SW[0]),
+					//Ram interface
 					.addrInput(w_dbg_addr_RAM),
                     .dataInput(w_dbg_data_RAM),
-					.switchFlag(SW[0]),
+					//CPU interface
 					.CPU_interface(96'd0),
-					.dbg_reg_addr(w_CPU_reg),
-
+					.dbg_reg(w_CPU_reg),
+					//Buses needed for the LCD
 					.lcd_flags({LCD_RS, LCD_E}),
 					.lcd_data(LCD_DB[7:4]));
-
 
 
 Module_FrequencyDivider custom_clk_gen	(	.clk_in(CLK_50M),
@@ -143,22 +149,41 @@ Module_FrequencyDivider custom_clk_gen	(	.clk_in(CLK_50M),
 
 					.clk_out(custom_clk));
 
+
+
+
+/******************************************/
+/*** 	Module for Debug Register selection	***/
+/******************************************/
+
+Module_Ladder_8_bit_SR dbg_reg_counter	(	.qzt_clk(CLK_50M),
+						.clk_in(dbg_clk),
+						.reset(0),
+						.set(0),
+						.presetValue(0),
+						.limit(4'b1100),
+						.pulse_up(w_stable_BTN_EAST),
+						.pulse_down(w_stable_BTN_NORTH),
+
+						.out(w_CPU_reg));	
+
+/******************************************/
+/*** 		Button Monostables 			***/
+/******************************************/
 Module_Monostable_enforced	Button_East_Monostable(	.clk_in(CLK_50M),
 					.monostable_input(BTN_EAST),
 					.N(defaultN*4),
 					.monostable_output(w_stable_BTN_EAST));
 
-Module_SynchroCounter_8_bit_SR Debug_Reg_Counter	(	.qzt_clk(CLK_50M),
-						.clk_in(w_stable_BTN_EAST),
-						.reset(0),
-						.set(0),
-						.presetValue(0),
-						.limit(4'b1100),
+Module_Monostable_enforced	Button_North_Monostable(	.clk_in(CLK_50M),
+					.monostable_input(BTN_NORTH),
+					.N(defaultN*4),
+					.monostable_output(w_stable_BTN_NORTH));
 
-						.out(w_CPU_reg));
-
-
-
+Module_Monostable_enforced	Button_South_Monostable(	.clk_in(CLK_50M),
+					.monostable_input(BTN_SOUTH),
+					.N(defaultN*4),
+					.monostable_output(w_stable_BTN_SOUTH));
 
 /**********************************/
 /*** 		RAM module 			***/

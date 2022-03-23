@@ -11,7 +11,9 @@ module	Module_CPU   (	clk_qzt,
 
 					data_out,
 					data_addr,
-					write_en
+					write_en,
+
+					dbg_interface
 					);
 
 // IN/OUT section
@@ -30,6 +32,8 @@ input [7:0] data_in;
 output [7:0] data_out;
 output [7:0] data_addr;
 output 	write_en;
+
+output [95:0] dbg_interface;
 
 //Reg section
 //debug output to know at which addr
