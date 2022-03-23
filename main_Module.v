@@ -154,7 +154,7 @@ Module_FrequencyDivider custom_clk_gen	(	.clk_in(CLK_50M),
 
 
 /******************************************/
-/*** 	Module for Debug Register selection	***/
+/*** 			Modules for Debug 		***/
 /******************************************/
 
 Module_Ladder_8_bit_SR dbg_reg_counter	(	.qzt_clk(CLK_50M),
@@ -163,10 +163,21 @@ Module_Ladder_8_bit_SR dbg_reg_counter	(	.qzt_clk(CLK_50M),
 						.set(0),
 						.presetValue(0),
 						.limit(4'b1100),
-						.pulse_up(w_stable_BTN_EAST),
-						.pulse_down(w_stable_BTN_NORTH),
+						.pulse_up(w_stable_BTN_EAST & SW[0]),
+						.pulse_down(w_stable_BTN_NORTH & SW[0]),
 
 						.out(w_CPU_reg));	
+
+Module_Ladder_8_bit_SR dbg_ram_counter	(	.qzt_clk(CLK_50M),
+						.clk_in(dbg_clk),
+						.reset(0),
+						.set(0),
+						.presetValue(0),
+
+						.pulse_up(w_stable_BTN_EAST & (!SW[0])),
+						.pulse_down(w_stable_BTN_NORTH & (!SW[0])),
+
+						.out(w_dbg_addr_RAM));	
 
 /******************************************/
 /*** 		Button Monostables 			***/
@@ -190,15 +201,18 @@ Module_Monostable_enforced	Button_South_Monostable(	.clk_in(CLK_50M),
 /*** 		RAM module 			***/
 /**********************************/
 Module_BRAM_256_byte RAM   (	.clk_qzt(CLK_50M),
-					.clk_in(custom_clk),
+					.dbg_clk()
+					.clk_in(w_stable_BTN_SOUTH),
 					.en(1),
-					.write_en(data_write_flag),
 
+					.write_en(data_write_flag),
 					.addr(data_addr),
-					.dbg_addr(w_dbg_addr_RAM),
 					.data_in(data_CPU_2_RAM),
 
+					.dbg_addr(w_dbg_addr_RAM),
+
 					.data_out(data_RAM_2_CPU),
+
 					.dbg_data_out(w_dbg_data_RAM));
 
 
@@ -207,7 +221,8 @@ Module_BRAM_256_byte RAM   (	.clk_qzt(CLK_50M),
 /**********************************/
 
 Module_CPU Mock_CPU  (	.clk_qzt(CLK_50M),
-                    .clk_in(custom_clk),
+					.dbg_clk()
+                    .clk_in(w_stable_BTN_SOUTH),
 
 					.en(1),
 					.reset(0),
