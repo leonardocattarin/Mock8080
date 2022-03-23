@@ -48,6 +48,7 @@ wire w_stable_BTN_SOUTH;
 
 //wire for choosing register visualization
 wire [3:0] w_CPU_reg;
+wire [95:0] w_dbg_CPU;
 
 wire w_custom_clk;
 wire w_dbg_clk;
@@ -137,7 +138,7 @@ LCD_Driver_Dbg lcd_driver	(	.qzt_clk(CLK_50M),
 					.addrInput(w_dbg_addr_RAM),
                     .dataInput(w_dbg_data_RAM),
 					//CPU interface
-					.CPU_interface(96'd0),
+					.CPU_interface(w_dbg_CPU),
 					.dbg_reg(w_CPU_reg),
 					//Buses needed for the LCD
 					.lcd_flags({LCD_RS, LCD_E}),
@@ -215,7 +216,9 @@ Module_CPU Mock_CPU  (	.clk_qzt(CLK_50M),
 
 					.data_out(data_CPU_2_RAM),
 					.data_addr(data_addr),
-					.write_en(data_write_flag)
+					.write_en(data_write_flag),
+
+					.dbg_interface(w_dbg_CPU)
 					);
 
 endmodule
