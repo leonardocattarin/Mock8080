@@ -2,6 +2,7 @@
 /*** Module_CPU ***/
 /***************************/
 module	Module_CPU   (	clk_qzt,
+					dbg_clk,
                     clk_in,
 
 					en,
@@ -19,6 +20,7 @@ module	Module_CPU   (	clk_qzt,
 // IN/OUT section
 input clk_qzt;
 input clk_in;
+input dbg_clk;
 input en;
 
 //address to reset instruction pointer
@@ -59,6 +61,7 @@ reg [7:0] data_out;
 reg [7:0] data_addr;
 reg 	write_en = 0;
 reg 	clk_in_old;
+reg		dbg_clk_old;
 
 //flags
 reg carry_flg;
@@ -66,7 +69,7 @@ reg carry_flg;
 buf(dbg_interface, {PC,IR,state,W,Z,A,B,C,SP,data_addr,data_out,data_in});
 
 always @(posedge clk_qzt) begin
-	if (en) begin
+	if (en && dbg_clk && !dbg_clk_old) begin
 		if (clk_in && !clk_in_old)begin //verifies enable and goes according to slave clock
 			if(reset) begin //reset program counter to given address
 				PC <= res_addr + 1;
@@ -151,6 +154,7 @@ always @(posedge clk_qzt) begin
 		end
 		clk_in_old <= clk_in;
 	end
+	dbg_clk_old <= dbg_clk;
 end
 
 endmodule

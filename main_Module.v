@@ -2,7 +2,6 @@
 
 module Main_Module	(	CLK_50M, 
 				SW, 
-				LED,
 				BTN_SOUTH, BTN_EAST, BTN_NORTH,
 				ROT_A, ROT_B, ROT_CENTER,
 
@@ -13,6 +12,7 @@ module Main_Module	(	CLK_50M,
 /*** Inputs ***/
 /**************/
 input		CLK_50M;
+input	[3:0]	SW;
 
 input 		BTN_SOUTH;
 input 		BTN_NORTH;
@@ -22,7 +22,7 @@ input 		ROT_A;
 input 		ROT_B; 
 input 		ROT_CENTER;
 
-input	[3:0]	SW;
+
 
 /***************/
 /*** Outputs ***/
@@ -31,33 +31,42 @@ output	[7:0]	LCD_DB; //LCD data
 output		LCD_E;
 output		LCD_RS;
 output		LCD_RW;
+
 output	[7:0]	LED;
 
 /**************/
 /*** Wires ****/
 /**************/
-wire [7:0] w_dbg_addr_RAM;
-wire [7:0] w_dbg_data_RAM;
+
+/*
 wire w_pulse_wire;
 wire w_direction;
 wire w_stable_ROT_A;
 wire w_stable_ROT_B;
+*/
+
+//wires for stabilized buttons
 wire w_stable_BTN_EAST;
 wire w_stable_BTN_NORTH;
 wire w_stable_BTN_SOUTH;
 
-//wire for choosing register visualization
-wire [3:0] w_CPU_reg;
+//wires for CPU debugging
+wire [3:0] w_dbg_CPU_reg;
 wire [95:0] w_dbg_CPU;
 
+//wires for RAM debugging
+wire [7:0] w_dbg_addr_RAM;
+wire [7:0] w_dbg_data_RAM;
+
+//secondary clocks
 wire w_custom_clk;
 wire w_dbg_clk;
 
-wire [7:0] data_CPU_2_RAM;
-wire [7:0] data_RAM_2_CPU;
-
+//buses for RAM-CPU interfaces
 wire [7:0] data_addr;
 wire 	data_write_flag ;
+wire [7:0] data_CPU_2_RAM;
+wire [7:0] data_RAM_2_CPU;
 
 
 
@@ -134,39 +143,48 @@ Module_SynchroCounter_8_bit_SR_bidirectional knob_counter	(	.qzt_clk(CLK_50M),
 */
 LCD_Driver_Dbg lcd_driver	(	.qzt_clk(CLK_50M),
 					.switchFlag(SW[0]),
+
 					//Ram interface
 					.addrInput(w_dbg_addr_RAM),
                     .dataInput(w_dbg_data_RAM),
+
 					//CPU interface
 					.CPU_interface(w_dbg_CPU),
 					.dbg_reg(w_CPU_reg),
+
 					//Buses needed for the LCD
 					.lcd_flags({LCD_RS, LCD_E}),
 					.lcd_data(LCD_DB[7:4]));
 
 
-Module_FrequencyDivider custom_clk_gen	(	.clk_in(CLK_50M),
-					.period(29'd100000000),
 
-					.clk_out(custom_clk));
+/**********************************/
+/*** 		Debug clock			***/
+/**********************************/
+
+
+Module_FrequencyDivider dbg_clk_gen	(	.clk_in(CLK_50M),
+					.period(29'd25000),
+
+					.clk_out(w_dbg_clk));
 
 
 
 
 /******************************************/
-/*** 			Modules for Debug 		***/
+/*** 		Counter	Modules for Debug 		***/
 /******************************************/
 
-Module_Ladder_8_bit_SR dbg_reg_counter	(	.qzt_clk(CLK_50M),
+Module_Ladder_8_bit_SR dbg_cpu_counter	(	.qzt_clk(CLK_50M),
 						.clk_in(dbg_clk),
 						.reset(0),
 						.set(0),
 						.presetValue(0),
 						.limit(4'b1100),
-						.pulse_up(w_stable_BTN_EAST & SW[0]),
-						.pulse_down(w_stable_BTN_NORTH & SW[0]),
+						.pulse_up(w_stable_BTN_EAST & (!SW[0])),
+						.pulse_down(w_stable_BTN_NORTH & (!SW[0])),
 
-						.out(w_CPU_reg));	
+						.out(w_dbg_CPU_reg));	
 
 Module_Ladder_8_bit_SR dbg_ram_counter	(	.qzt_clk(CLK_50M),
 						.clk_in(dbg_clk),
@@ -174,8 +192,8 @@ Module_Ladder_8_bit_SR dbg_ram_counter	(	.qzt_clk(CLK_50M),
 						.set(0),
 						.presetValue(0),
 
-						.pulse_up(w_stable_BTN_EAST & (!SW[0])),
-						.pulse_down(w_stable_BTN_NORTH & (!SW[0])),
+						.pulse_up(w_stable_BTN_EAST & SW[0]),
+						.pulse_down(w_stable_BTN_NORTH & SW[0]),
 
 						.out(w_dbg_addr_RAM));	
 
@@ -201,18 +219,22 @@ Module_Monostable_enforced	Button_South_Monostable(	.clk_in(CLK_50M),
 /*** 		RAM module 			***/
 /**********************************/
 Module_BRAM_256_byte RAM   (	.clk_qzt(CLK_50M),
-					.dbg_clk()
+					.dbg_clk(dbg_clk)
 					.clk_in(w_stable_BTN_SOUTH),
 					.en(1),
-
+					
+					//inputs from CPU
 					.write_en(data_write_flag),
 					.addr(data_addr),
 					.data_in(data_CPU_2_RAM),
 
+					//dbg input
 					.dbg_addr(w_dbg_addr_RAM),
 
+					//Data output from RAM to CPU
 					.data_out(data_RAM_2_CPU),
 
+					//dbg output
 					.dbg_data_out(w_dbg_data_RAM));
 
 
@@ -221,18 +243,21 @@ Module_BRAM_256_byte RAM   (	.clk_qzt(CLK_50M),
 /**********************************/
 
 Module_CPU Mock_CPU  (	.clk_qzt(CLK_50M),
-					.dbg_clk()
+					.dbg_clk(dbg_clk)
                     .clk_in(w_stable_BTN_SOUTH),
 
 					.en(1),
 					.reset(0),
 					.res_addr(0),
+					//data input from RAM (used after read query)
 					.data_in(data_RAM_2_CPU),
 
+					//data and addr output for RAM write
 					.data_out(data_CPU_2_RAM),
 					.data_addr(data_addr),
 					.write_en(data_write_flag),
 
+					//output debug interface
 					.dbg_interface(w_dbg_CPU)
 					);
 

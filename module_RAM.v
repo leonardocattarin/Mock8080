@@ -9,6 +9,7 @@
 
 module	Module_BRAM_256_byte   (	clk_qzt,
                     clk_in,
+					dbg_clk,
 					en,
 					write_en,
 
@@ -22,6 +23,8 @@ module	Module_BRAM_256_byte   (	clk_qzt,
 // IN/OUT section
 input clk_qzt;
 input clk_in;
+input dbg_clk_old;
+input dbg_clk;
 input en;
 input write_en;
 
@@ -50,7 +53,7 @@ end
 
 
 always @(posedge clk_qzt) begin
-	if (en)begin
+	if (en && dbg_clk && !dbg_clk_old)begin
 		if (clk_in && !clk_in_old) begin
 			if (write_en) begin
 				RAM[addr] <= data_in;
@@ -62,6 +65,7 @@ always @(posedge clk_qzt) begin
         dbg_data_out <= RAM[dbg_addr];
 		clk_in_old <= clk_in;
 	end
+	dbg_clk_old <= dbg_clk;
 end
 
 endmodule
