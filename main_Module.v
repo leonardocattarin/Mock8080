@@ -219,7 +219,7 @@ Module_Monostable_enforced	Button_South_Monostable(	.clk_in(CLK_50M),
 /*** 		RAM module 			***/
 /**********************************/
 Module_BRAM_256_byte RAM   (	.clk_qzt(CLK_50M),
-					.dbg_clk(dbg_clk)
+					.dbg_clk(dbg_clk),
 					.clk_in(w_stable_BTN_SOUTH),
 					.en(1),
 					
@@ -243,7 +243,7 @@ Module_BRAM_256_byte RAM   (	.clk_qzt(CLK_50M),
 /**********************************/
 
 Module_CPU Mock_CPU  (	.clk_qzt(CLK_50M),
-					.dbg_clk(dbg_clk)
+					.dbg_clk(dbg_clk),
                     .clk_in(w_stable_BTN_SOUTH),
 
 					.en(1),

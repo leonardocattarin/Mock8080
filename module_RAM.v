@@ -23,7 +23,6 @@ module	Module_BRAM_256_byte   (	clk_qzt,
 // IN/OUT section
 input clk_qzt;
 input clk_in;
-input dbg_clk_old;
 input dbg_clk;
 input en;
 input write_en;
@@ -41,6 +40,7 @@ reg [7:0] data_out;
 reg [7:0] dbg_data_out;
 
 reg clk_in_old;
+reg dbg_clk_old;
 
 //ram blocks, 8bit address and 8bit=1byte cells, -> 256 bytes memory
 reg [7:0] RAM [255:0]; //unit size, number of unit cells
