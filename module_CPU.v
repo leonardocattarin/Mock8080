@@ -84,9 +84,12 @@ always @(posedge clk_qzt) begin
 							write_en <= 0;  //read mode
 							state <= state + 1;
 						end 
-						//needs a step in between
 						8'd1: begin
-							IR <= data_out; //fetch next instruction from RAM in IR
+							//wait to allow RAM operations
+							state <= state + 1;
+						end 
+						8'd2: begin
+							IR <= data_out; //fetch instruction from RAM in IR
 							state <= state + 1;
 						end 
 					endcase
@@ -94,14 +97,28 @@ always @(posedge clk_qzt) begin
 					//begin actual instruction execution
 					//NOTE: usually instructions update program counter only at the end of their execution
 					case (IR)
+						//NOP, does nothing
+						8'h00: begin
+								case (state)
+									8'd3: begin //simply increase PC and reset state
+										PC <= PC + 1;
+										state <= 0;
+									end
+								endcase
+								end
 						//JMP, jumps to address
 						8'hC3: begin
 								case (state)
-									8'd2: begin //RAM fetch request for next address
+									8'd3: begin //RAM fetch request for next address
 										data_addr <= PC + 1;
+										write_en <= 0;  //read mode
 										state <= state + 1;
 									end
-									8'd3: begin //load fetched data directly in PC and reset state
+									8'd4: begin 
+										//wait to allow RAM operations
+										state <= state + 1;
+									end
+									8'd5: begin //load fetched data directly in PC and reset state
 										PC <= data_in;
 										state <= 0;
 									end
@@ -110,11 +127,11 @@ always @(posedge clk_qzt) begin
 						//MVI B,Data, copies the byte to B reg
 						8'h06: begin
 								case (state)
-									8'd2: begin //request fetch next byte
+									8'd3: begin //request fetch next byte
 										data_addr <= PC + 1;
 										state <= state + 1;
 									end
-									8'd3: begin //load data directly in B and increse PC
+									8'd4: begin //load data directly in B and increse PC
 										B <= data_in;
 										PC <= PC + 2;
 										state <= 0;
@@ -124,26 +141,17 @@ always @(posedge clk_qzt) begin
 						//ADD B, adds B content to A, sets carry
 						8'h80: begin
 								case (state)
-									8'd2: begin //request fetch next byte
+									8'd3: begin //request fetch next byte
 										{carry_flg, A} <= A + B;
 										state <= 0;
 										PC <= PC + 1;
 									end
 								endcase
 								end
-						//NOP, does nothing
-						8'h00: begin
-								case (state)
-									8'd2: begin //simply increase PC and reset state
-										PC <= PC + 1;
-										state <= 0;
-									end
-								endcase
-								end
 						//by default do a nope
 						default: begin
 								case (state)
-									8'd2: begin //simply increase PC and reset state
+									8'd3: begin //simply increase PC and reset state
 										PC <= PC + 1;
 										state <= 0;
 									end

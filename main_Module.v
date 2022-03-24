@@ -164,7 +164,7 @@ LCD_Driver_Dbg lcd_driver	(	.qzt_clk(CLK_50M),
 
 
 Module_FrequencyDivider dbg_clk_gen	(	.clk_in(CLK_50M),
-					.period(29'd25000),
+					.period(29'd25000), //1kHz?
 
 					.clk_out(w_dbg_clk));
 
