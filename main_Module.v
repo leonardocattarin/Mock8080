@@ -75,8 +75,8 @@ buf(LCD_RW, 0); // only writing on LCD
 buf(LCD_DB[3:0], 4'b1111); //we use only 4-bit LCD interface
 
 //temp
-buf(LED[7:1],0);
-buf(LED[0],w_stable_BTN_EAST);
+buf(LED[7:0],w_dbg_addr_RAM);
+//buf(LED[0],w_stable_BTN_EAST);
 
 
 
@@ -150,7 +150,7 @@ LCD_Driver_Dbg lcd_driver	(	.qzt_clk(CLK_50M),
 
 					//CPU interface
 					.CPU_interface(w_dbg_CPU),
-					.dbg_reg(w_CPU_reg),
+					.dbg_reg(w_dbg_CPU_reg),
 
 					//Buses needed for the LCD
 					.lcd_flags({LCD_RS, LCD_E}),
@@ -176,7 +176,7 @@ Module_FrequencyDivider dbg_clk_gen	(	.clk_in(CLK_50M),
 /******************************************/
 
 Module_Ladder_8_bit_SR dbg_cpu_counter	(	.qzt_clk(CLK_50M),
-						.clk_in(dbg_clk),
+						.clk_in(w_dbg_clk),
 						.reset(0),
 						.set(0),
 						.presetValue(0),
@@ -187,10 +187,11 @@ Module_Ladder_8_bit_SR dbg_cpu_counter	(	.qzt_clk(CLK_50M),
 						.out(w_dbg_CPU_reg));	
 
 Module_Ladder_8_bit_SR dbg_ram_counter	(	.qzt_clk(CLK_50M),
-						.clk_in(dbg_clk),
+						.clk_in(w_dbg_clk),
 						.reset(0),
 						.set(0),
 						.presetValue(0),
+						.limit(8'b00000000),
 
 						.pulse_up(w_stable_BTN_EAST & SW[0]),
 						.pulse_down(w_stable_BTN_NORTH & SW[0]),
@@ -219,7 +220,7 @@ Module_Monostable_enforced	Button_South_Monostable(	.clk_in(CLK_50M),
 /*** 		RAM module 			***/
 /**********************************/
 Module_BRAM_256_byte RAM   (	.clk_qzt(CLK_50M),
-					.dbg_clk(dbg_clk),
+					.dbg_clk(w_dbg_clk),
 					.clk_in(w_stable_BTN_SOUTH),
 					.en(1),
 					
@@ -243,7 +244,7 @@ Module_BRAM_256_byte RAM   (	.clk_qzt(CLK_50M),
 /**********************************/
 
 Module_CPU Mock_CPU  (	.clk_qzt(CLK_50M),
-					.dbg_clk(dbg_clk),
+					.dbg_clk(w_dbg_clk),
                     .clk_in(w_stable_BTN_SOUTH),
 
 					.en(1),
