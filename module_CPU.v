@@ -66,7 +66,8 @@ reg		dbg_clk_old;
 //flags
 reg carry_flg;
 
-buf(dbg_interface, {PC,IR,state,W,Z,A,B,C,SP,data_addr,data_out,data_in});
+buf(dbg_interface, {data_in,data_out,data_addr,SP,C,B,A,Z,W,state,IR,PC});
+
 
 always @(posedge clk_qzt) begin
 	if (en && dbg_clk && !dbg_clk_old) begin
