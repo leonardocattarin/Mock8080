@@ -63,10 +63,10 @@ wire w_custom_clk;
 wire w_dbg_clk;
 
 //buses for RAM-CPU interfaces
-wire [7:0] data_addr;
-wire 	data_write_flag ;
-wire [7:0] data_CPU_2_RAM;
-wire [7:0] data_RAM_2_CPU;
+wire [7:0] w_data_addr;
+wire 	w_data_write_flag ;
+wire [7:0] w_data_CPU_2_RAM;
+wire [7:0] w_data_RAM_2_CPU;
 
 
 
@@ -225,15 +225,15 @@ Module_BRAM_256_byte RAM   (	.clk_qzt(CLK_50M),
 					.en(1),
 					
 					//inputs from CPU
-					.write_en(data_write_flag),
-					.addr(data_addr),
-					.data_in(data_CPU_2_RAM),
+					.write_en(w_data_write_flag),
+					.addr(w_data_addr),
+					.data_in(w_data_CPU_2_RAM),
 
 					//dbg input
 					.dbg_addr(w_dbg_addr_RAM),
 
 					//Data output from RAM to CPU
-					.data_out(data_RAM_2_CPU),
+					.data_out(w_data_RAM_2_CPU),
 
 					//dbg output
 					.dbg_data_out(w_dbg_data_RAM));
@@ -251,12 +251,12 @@ Module_CPU Mock_CPU  (	.clk_qzt(CLK_50M),
 					.reset(0),
 					.res_addr(0),
 					//data input from RAM (used after read query)
-					.data_in(data_RAM_2_CPU),
+					.data_in(w_data_RAM_2_CPU),
 
 					//data and addr output for RAM write
-					.data_out(data_CPU_2_RAM),
-					.data_addr(data_addr),
-					.write_en(data_write_flag),
+					.data_out(w_data_CPU_2_RAM),
+					.data_addr(w_data_addr),
+					.write_en(w_data_write_flag),
 
 					//output debug interface
 					.dbg_interface(w_dbg_CPU)

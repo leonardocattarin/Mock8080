@@ -90,7 +90,7 @@ always @(posedge clk_qzt) begin
 							state <= state + 1;
 						end 
 						8'd2: begin
-							IR <= data_out; //fetch instruction from RAM in IR
+							IR <= data_in; //fetch instruction from RAM in IR
 							state <= state + 1;
 						end 
 					endcase
