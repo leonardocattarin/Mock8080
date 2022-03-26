@@ -133,6 +133,30 @@ always @(posedge clk_qzt) begin
 									end
 								endcase
 								end
+
+						//JC, jumps conditionally to address according to auxiliary flag
+						8'hDA: begin
+								case (state)
+									8'd3: begin //RAM fetch request for next address
+										if(AF)begin
+											data_addr <= PC + 1;
+											write_en <= 0;  //read mode
+											state <= state + 1;
+										end else begin
+											PC <= PC + 1;
+											state <= 0;
+										end
+									end
+									8'd4: begin 
+										//wait to allow RAM operations
+										state <= state + 1;
+									end
+									8'd5: begin //load fetched data directly in PC and reset state
+										PC <= data_in;
+										state <= 0;
+									end
+								endcase
+								end
 						//MVI B,Data, copies the byte to B reg
 						8'h06: begin
 								case (state)
@@ -281,6 +305,98 @@ always @(posedge clk_qzt) begin
 									end
 								endcase
 								end
+
+						//ADD M(H)
+						8'h86: begin
+								case (state)
+									8'd3: begin //RAM fetch request for next address
+										data_addr <= H;
+										write_en <= 0;  //read mode
+										state <= state + 1;
+									end
+									8'd4: begin 
+										//wait to allow RAM operations
+										state <= state + 1;
+									end
+									8'd5: begin //Sum fetched data to A and set carry
+										{carry_flg, A} <= data_in + A;
+										state <= 0;
+										PC <= PC + 1;
+									end
+								endcase
+								end
+
+						//CMP B (compares B to A)
+						8'hB8: begin
+								case (state)
+									8'd3: begin 
+										if(A==B)begin
+											flg_zero = 0;
+										end else if(A>B) begin
+											flg_carry = 0;
+										end else begin
+											flg_carry = 1;
+										end
+										state <= 0;
+										PC <= PC + 1;
+									end
+								endcase
+								end
+						
+						//CHC, Check carry and set accordingly auxilisry flag
+						8'hDC: begin
+								case (state)
+									8'd3: begin 
+										flg_auxiliary <= flg_carry;
+										state <= 0;
+										PC <= PC + 1;
+									end
+								endcase
+								end
+						
+						//CHS, Check sign and set accordingly auxilisry flag
+						8'hF4: begin
+								case (state)
+									8'd3: begin 
+										flg_auxiliary <= flg_sign;
+										state <= 0;
+										PC <= PC + 1;
+									end
+								endcase
+								end
+						
+						//CHP, Check parity and set accordingly auxilisry flag
+						8'hEC: begin
+								case (state)
+									8'd3: begin 
+										flg_auxiliary <= flg_parity;
+										state <= 0;
+										PC <= PC + 1;
+									end
+								endcase
+								end
+						
+						//CHZ, Check zero flag and set accordingly auxiliary flag
+						8'hCC: begin
+								case (state)
+									8'd3: begin 
+										flg_auxiliary <= flg_zero;
+										state <= 0;
+										PC <= PC + 1;
+									end
+								endcase
+								end
+						
+						//HLT, Halts execution
+						8'h76: begin
+								case (state)
+									8'd3: begin 
+										//halt execution duing nothing
+									end
+								endcase
+								end
+
+
 						//by default do a nope
 						default: begin
 								case (state)
