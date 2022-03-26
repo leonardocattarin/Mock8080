@@ -53,6 +53,9 @@ reg [7:0] A; //accumulator register
 reg [7:0] B; //auxiliary general purpose registers
 reg [7:0] C;
 
+reg [7:0] H; //auxiliary regs, usually used to store addresses
+reg [7:0] L;
+
 reg [7:0] SP; //stack pointer register (stack grows downwards)
 
 reg [7:0] state = 0; //identifies instruction state
@@ -64,7 +67,12 @@ reg 	clk_in_old;
 reg		dbg_clk_old;
 
 //flags
-reg carry_flg;
+reg flg_carry;
+reg flg_sign;
+reg flg_zero;
+reg flg_parity;
+reg flg_auxiliary;
+
 
 buf(dbg_interface, {data_in,data_out,data_addr,SP,C,B,A,Z,W,state,IR,PC});
 
@@ -130,9 +138,14 @@ always @(posedge clk_qzt) begin
 								case (state)
 									8'd3: begin //request fetch next byte
 										data_addr <= PC + 1;
+										write_en <= 0;  //read mode
 										state <= state + 1;
 									end
-									8'd4: begin //load data directly in B and increse PC
+									8'd4: begin 
+										//wait to allow RAM operations
+										state <= state + 1;
+									end
+									8'd5: begin //load data directly in B and increse PC
 										B <= data_in;
 										PC <= PC + 2;
 										state <= 0;
