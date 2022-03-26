@@ -152,6 +152,125 @@ always @(posedge clk_qzt) begin
 									end
 								endcase
 								end
+						//MOV B,A, copies A to B
+						8'h47: begin
+								case (state)
+									8'd3: begin //load data directly in B and increse PC
+										B <= A;
+										PC <= PC + 1;
+										state <= 0;
+									end
+								endcase
+								end
+						//MOV A,B, copies B to A
+						8'h78: begin
+								case (state)
+									8'd3: begin //load data directly in A and increse PC
+										A <= B;
+										PC <= PC + 1;
+										state <= 0;
+									end
+								endcase
+								end
+						//MOV B,C
+						8'h41: begin
+								case (state)
+									8'd3: begin //load data directly in B and increse PC
+										B <= C;
+										PC <= PC + 1;
+										state <= 0;
+									end
+								endcase
+								end
+						//MOV C,B
+						8'h48: begin
+								case (state)
+									8'd3: begin 
+										C <= B;
+										PC <= PC + 1;
+										state <= 0;
+									end
+								endcase
+								end
+						//MOV B,H
+						8'h44: begin
+								case (state)
+									8'd3: begin 
+										B <= H;
+										PC <= PC + 1;
+										state <= 0;
+									end
+								endcase
+								end
+						//MOV H,B
+						8'h60: begin
+								case (state)
+									8'd3: begin 
+										H <= B;
+										PC <= PC + 1;
+										state <= 0;
+									end
+								endcase
+								end
+						//MOV B,L
+						8'h45: begin
+								case (state)
+									8'd3: begin 
+										B <= L;
+										PC <= PC + 1;
+										state <= 0;
+									end
+								endcase
+								end
+						//MOV L,B
+						8'h68: begin
+								case (state)
+									8'd3: begin 
+										L <= B;
+										PC <= PC + 1;
+										state <= 0;
+									end
+								endcase
+								end
+
+						//MOV M(H),B
+						8'h70: begin
+								case (state)
+									8'd3: begin //prepare output buses for writing on RAM
+										data_out <= B; 
+										data_addr <= H;
+										write_en <= 1;
+										state <= state +1;
+									end
+									8'd4: begin //write once and then stop writing
+										write_en <= 0;
+										state <= 0;
+										PC <= PC + 1;
+									end
+								endcase
+								end
+
+						//MOV B,M(H)
+						8'h46: begin
+								case (state)
+									8'd3: begin //RAM fetch request for next address
+										data_addr <= H;
+										write_en <= 0;  //read mode
+										state <= state + 1;
+									end
+									8'd4: begin 
+										//wait to allow RAM operations
+										state <= state + 1;
+									end
+									8'd5: begin //load fetched data directly in PC and reset state
+										B <= data_in;
+										state <= 0;
+										PC <= PC + 1;
+									end
+								endcase
+								end
+
+
 						//ADD B, adds B content to A, sets carry
 						8'h80: begin
 								case (state)
