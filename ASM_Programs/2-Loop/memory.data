@@ -1,25 +1,6 @@
-C3  //the first time jump directly to instructions
-0E
-00 //counter
-06 //loads counter address in B
 00
-00  // move B to H
 00
-00  //MOV from address in H to B (counter)
-00
-00  //move B to A
-00  //move 01 to B
-00
-00  //sum B to A
-00  //MOV from A to B
-00  //MOV from B to address in H (puts in memory increased counter)
-00  //load upper limit in B
-09  
-00  //Compare B to A
-00  //check zero (equal) flag and put result in aux
-DA  //JC, exit loop if counter is maxed
-17 
-00  //begin instructions inside loop
+C3
 00
 00
 00
@@ -30,8 +11,27 @@ DA  //JC, exit loop if counter is maxed
 00
 00
 00
-C3 //jumps by default back before loop check
-02
+00
+00
+00
+00
+00
+00
+00
+00
+00
+00
+00
+00
+00
+00
+00
+00
+00
+00
+00
+00
+00
 00
 00
 00
