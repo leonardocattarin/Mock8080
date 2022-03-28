@@ -1,2 +1,2 @@
 # Mock8080
-Mock-up of Intel 8080 Microprocessor developed for the laboratory of advanced electronics course
+A mock-up implementation of Intel 8080 Microprocessor, developed for the Laboratory of Advanced Electronics course
