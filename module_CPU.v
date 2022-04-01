@@ -138,7 +138,7 @@ always @(posedge clk_qzt) begin
 						8'hDA: begin
 								case (state)
 									8'd3: begin //RAM fetch request for next address
-										if(AF)begin
+										if(flg_auxiliary)begin
 											data_addr <= PC + 1;
 											write_en <= 0;  //read mode
 											state <= state + 1;
@@ -299,7 +299,7 @@ always @(posedge clk_qzt) begin
 						8'h80: begin
 								case (state)
 									8'd3: begin //request fetch next byte
-										{carry_flg, A} <= A + B;
+										{flg_carry, A} <= A + B;
 										state <= 0;
 										PC <= PC + 1;
 									end
@@ -319,7 +319,7 @@ always @(posedge clk_qzt) begin
 										state <= state + 1;
 									end
 									8'd5: begin //Sum fetched data to A and set carry
-										{carry_flg, A} <= data_in + A;
+										{flg_carry, A} <= data_in + A;
 										state <= 0;
 										PC <= PC + 1;
 									end
@@ -331,11 +331,11 @@ always @(posedge clk_qzt) begin
 								case (state)
 									8'd3: begin 
 										if(A==B)begin
-											flg_zero = 0;
+											flg_zero <= 0;
 										end else if(A>B) begin
-											flg_carry = 0;
+											flg_carry <= 0;
 										end else begin
-											flg_carry = 1;
+											flg_carry <= 1;
 										end
 										state <= 0;
 										PC <= PC + 1;
