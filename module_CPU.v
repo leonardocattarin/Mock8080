@@ -294,7 +294,6 @@ always @(posedge clk_qzt) begin
 								endcase
 								end
 
-
 						//ADD B, adds B content to A, sets carry
 						8'h80: begin
 								case (state)
