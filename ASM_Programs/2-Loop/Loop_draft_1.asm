@@ -1,37 +1,25 @@
 //jump directly to instructions
-JMP PTR[LOOP]
+JMP PTR[INSTRUCTIONS]
 
 //memory location of counter value and initial address for number writing
 COUNTER = 0
-UPPER_LIMIT
 NUMBERS_ADDR
 
-//increment routine
-#INCREMENT#
-//load in H counter address
+#PRE_LOOP#
 MVI B,PTR[COUNTER]
 MOV H,B
-
-//increase counter by 1
-MVI B, 01
+MOV B, M[H]
+MOV A, B
+MVI 01
 ADD B
 MOV B,A
-
-//write counter to its memory position
 MOV M[H],B
-
-//load upper limit in B
-MVI B,PTR[UPPER_LIMIT]
-MOV H,B
-MOV B,M[H]
-
-//compare A (counter) with B(upper limit)
+MVI UPPER_LIMIT
 CMP B
-//check if zero flag is 1 (A=B) and jump to end program if true
 CHZ
 JC PTR[AFTER_LOOP]
 
-#LOOP#
+#INSTRUCTIONS#
 //puts counter value in A
 MVI B,PTR[COUNTER]
 MOV H,B
@@ -47,9 +35,8 @@ MOV H,B
 //re-load counter value in B and write it to memory
 MOV B,A
 MOV M[H],B
-
-//jump to increment routine
-JMP [INCREMENT]
+...
+JMP [PRE_LOOP]
 
 #AFTER_LOOP#
 HLT

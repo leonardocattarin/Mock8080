@@ -326,15 +326,20 @@ always @(posedge clk_qzt) begin
 								end
 
 						//CMP B (compares B to A)
+						//note: correct implementation is via 2's complement and addition
 						8'hB8: begin
 								case (state)
 									8'd3: begin 
 										if(A==B)begin
-											flg_zero <= 0;
-										end else if(A>B) begin
-											flg_carry <= 0;
-										end else begin
-											flg_carry <= 1;
+											flg_zero <= 1;
+										end 
+										else
+										begin
+											if(A>=B) begin
+												flg_carry <= 0;
+											end else begin
+												flg_carry <= 1;
+											end
 										end
 										state <= 0;
 										PC <= PC + 1;
