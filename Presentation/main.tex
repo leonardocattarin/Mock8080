@@ -1,0 +1,31 @@
+\documentclass[12pt]{reportclass}
+
+\logo{logo_unitn.png}
+\title{Developments of a FPGA-based Intel 8080 Mockup Soft Microprocessor}
+\author{Leonardo Cattarin }
+\date{}
+\institute{University of Trento}
+\department{Department of Physics}
+\class{Laboratory of Advanced Electronics}
+\professor{Professor: Ricci Leonardo}
+\addbibresource{bibliography.bib}
+
+\DeclareSIUnit\nm{\nano\meter}
+\DeclareSIUnit\um{\micro\meter}
+\DeclareSIUnit\mA{\milli\ampere}
+\DeclareSIUnit\mW{\milli\watt}
+\DeclareSIUnit{\belmilliwatt}{Bm}
+\DeclareSIUnit\dBm{\deci\belmilliwatt}
+
+\begin{document}
+\maketitle
+
+\input{Sections/Introduction}
+\input{Sections/Implementation}
+\input{Sections/Code}
+\input{Sections/Conclusions}
+
+\appendix
+\printbibliography[heading=bibintoc]
+
+\end{document}

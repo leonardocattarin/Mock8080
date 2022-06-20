@@ -73,7 +73,7 @@ reg flg_zero;
 reg flg_parity;
 reg flg_auxiliary;
 
-
+//connect debug wirebus with single registers
 buf(dbg_interface, {data_in,data_out,data_addr,SP,C,B,A,Z,W,state,IR,PC});
 
 

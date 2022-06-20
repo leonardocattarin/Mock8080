@@ -1,0 +1,60 @@
+\fancypagestyle{title_style}{
+	\fancyhead{}
+	\fancyfoot{}
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0.4pt}
+	\fancyfoot[RO] {\footnotesize\itshape\makeatletter\setlength{\tabcolsep}{1pt}\begin{tabular}[t]{c}%
+			\@author
+		\end{tabular}%
+		\makeatother}
+}
+
+%%%%
+% Title Format
+%%%%
+\renewcommand{\maketitle}{
+	\thispagestyle{title_style}
+	\begin{center}
+		\ifx\logoloc\undefined{}\else{
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=0.16\columnwidth]{\logoloc}
+				\end{figure}} \fi
+		\ifx\instituteloc\undefined{}\else{\scshape\instituteloc}\\
+			\vspace{3pt}
+		\fi
+		\ifx\departmentloc\undefined{}\else{\scshape\departmentloc}\\
+			\vspace{3pt}
+		\fi
+		\vspace{5pt}
+		\hrule
+		\vspace{10pt}
+		{\LARGE\bfseries\@title}\\
+		\vspace{8pt}
+		\ifx\@author\undefined{}\else
+			{\itshape
+				\begin{tabular}[t]{c}%
+					\@author
+				\end{tabular}}%
+			\\
+			\vspace{8pt}
+		\fi
+		\hrule
+		\vspace{10pt}
+		\ifx\classloc\undefined{}\else{\large\classloc}\\
+			\vspace{2pt}
+		\fi
+		\ifx\professorloc\undefined{}\else{\itshape
+			\begin{tabular}[t]{c}%
+				\professorloc
+			\end{tabular}}%
+		\\
+		\vspace{3pt}
+		\fi
+		{\@date}
+		\vspace{20pt}
+	\end{center}
+	\setcounter{footnote}{0}
+}
+
+\endinput

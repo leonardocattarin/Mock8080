@@ -1,11 +1,11 @@
 `define		Test	4'b1100
 
-module Main_Module	(	CLK_50M, 
-				SW, 
-				BTN_SOUTH, BTN_EAST, BTN_NORTH,
-				ROT_A, ROT_B, ROT_CENTER,
+module Main_Module	(	CLK_50M, //main clock
+				SW, //switch
+				BTN_SOUTH, BTN_EAST, BTN_NORTH, //buttons
+				ROT_A, ROT_B, ROT_CENTER, //rotary knob sensors
 
-				LCD_DB, LCD_E, LCD_RS, LCD_RW,
+				LCD_DB, LCD_E, LCD_RS, LCD_RW, //lcd connectors
 				LED); 
 
 /**************/
@@ -63,14 +63,14 @@ wire w_custom_clk;
 wire w_dbg_clk;
 
 //buses for RAM-CPU interfaces
-wire [7:0] w_data_addr;
-wire 	w_data_write_flag ;
+wire [7:0] w_data_addr; //data flag for reading/writing
+wire 	w_data_write_flag ; //0:read, 1:write
 wire [7:0] w_data_CPU_2_RAM;
 wire [7:0] w_data_RAM_2_CPU;
 
 
 
-/*** Assign and buffers ***/
+/*** Assign and buffers for LCD functioning ***/
 buf(LCD_RW, 0); // only writing on LCD
 buf(LCD_DB[3:0], 4'b1111); //we use only 4-bit LCD interface
 

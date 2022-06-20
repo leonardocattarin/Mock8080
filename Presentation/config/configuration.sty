@@ -1,0 +1,124 @@
+%%%
+% Custom Settings and Functions
+%%%
+% Geometry
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+
+% Page Style
+\fancypagestyle{document_style}{
+	\fancyhead{}
+	\fancyfoot{}
+	\renewcommand{\headrulewidth}{0.4pt}
+	\renewcommand{\footrulewidth}{0.4pt}
+	\fancyhead[RO] {\footnotesize\thepage}
+	\fancyhead[LO] {\footnotesize{\ifx\classloc\undefined{}\else\itshape\classloc{} --{} \fi}\makeatletter\@title\makeatother }
+	\fancyfoot[RO] {\footnotesize\itshape\makeatletter\setlength{\tabcolsep}{1pt}\begin{tabular}[t]{c}%
+			\@author
+		\end{tabular}%
+		\makeatother}
+}
+
+\pagestyle{document_style}
+\pagenumbering{arabic}
+
+% Equations
+\numberwithin{equation}{section}
+
+% Uncertainty 
+% \sisetup{separate-uncertainty=true}
+\sisetup{mode=text,range-phrase = {\text{~-~}}}
+
+% Hyperref
+\hypersetup{pdfborder={0 0 0}} % Remove red border
+
+% Citations
+\newcommand{\etal}{\textit{et al.}}
+
+% Itemize
+\setlist{itemsep=.005em}
+\setlist[itemize]{label=\textbullet}
+
+% Caption
+\captionsetup{font=small, labelfont=bf}
+
+% Floor and ceil
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% Add numeric set
+\newcommand{\numberset}{\mathbb}
+\newcommand{\N}{\numberset{N}}
+\newcommand{\R}{\numberset{R}}
+\newcommand{\Q}{\numberset{Q}}
+\newcommand{\Z}{\numberset{Z}}
+
+% Roman number
+\newcommand{\rom}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
+
+%%%
+% figure
+%%%
+% \inputfigure[1.]{name}% scale, img name (also figure label)
+% {Title}%
+% {Caption}
+
+\newcommand{\inputfigure}[4][1.]{%
+	\def\path{#2}
+	\def\figlabel{#2}
+	\edef\path{img/\path.pdf}
+	\begin{figure}[htbp]
+		\begin{center}
+			\textbf{#3}\\
+			\includegraphics[scale=#1]{\path}
+			\caption{#4}\label{fig:\figlabel}
+		\end{center}
+	\end{figure}
+}
+
+%%%
+% subfigure
+%%%
+% \envsubfigure{figure label}% 
+% {Figure Title}%
+% {Figure Caption}%
+% {
+% 	\inputsubfigure[1.]{0.475}{name}% graphics scale, column width, img name (also the subfigure label)
+% 	{Subfigure Title}%
+% 	{Subfigure Caption}
+% 	\hfill
+% 	\inputsubfigure{0.475}{name2}%
+% 	{}%
+% 	{}
+% }
+
+\newcommand{\inputsubfigure}[5][1.]{%
+	\def\path{#3}
+	\def\figlabel{#3}
+	\edef\path{img/\path.pdf}
+	\begin{subfigure}[r]{#2\linewidth}% [!htbp] % 
+		\begin{center}
+			\textbf{#4}\\
+			\includegraphics[scale=#1]{\path}
+			\caption{#5}\label{fig:\figlabel}
+		\end{center}
+	\end{subfigure}
+}
+
+\newcommand{\envsubfigure}[4]{%
+	\def\figlabel{#1}
+	\begin{figure}[htbp]
+		\begin{center}
+			\textbf{#2}\\
+			{#4}
+			\caption{#3}
+			\label{fig:\figlabel}
+		\end{center}
+	\end{figure}
+}
+
+% Tables
+\newcommand{\samecell}[1]{
+	\begin{tabular}{@{}c@{}}\strut#1\strut\end{tabular}
+}
+
+\endinput
