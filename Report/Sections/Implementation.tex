@@ -11,9 +11,10 @@ Both the CPU and RAM run on three different clocks: a 50 MHz "Master" synchroniz
 The RAM is pre-loaded with the data and instructions during the FPGA configuration phase.
 
 
+
 \subsection{CPU Module}  \label{ssec:cpu}
 *Block scheme/image of CPU internal registers and buses*
-*scheme of states for some instructions?*
+*scheme of states for some instructions? (initial 3 states, then example of other instructions)*
 
 The CPU module behaves like a state machine which fetches and executes one instruction at time from the RAM in the form of single-byte operation codes ("opcodes").
 If the instruction requires it, the CPU can also fetch other bytes as parameters..
@@ -42,12 +43,52 @@ The following is a list of the internal CPU module registers:
     \code{flg\_auxiliary} is used as general-purpose flag to reduce the number of required instructions.
 \end{itemize}
 
-*comments on the number of minimal instructions*
-
-The list of the implemented instructions is presented in Appendix A.
+As a side note, the input/output operations usually require additional "buffering" times (blank states) to allow address informations delivery or data fetches.
 
 \subsection{RAM Module}  \label{ssec:ram}
-The \code{Module\_BRAM\_256\_byte} module is based on the usage of Block Ram,  256 8-bit Block-Ra
+The \code{Module\_BRAM\_256\_byte} module is based on the usage of the "Block Ram" modules present in the Xilinx Spartan 3A.
+From the logical and Verilog code points of view, the Block RAM cells can be declared as arrays of $n$-bit registers.
+In this specific module, the Block ram used is organized as an array of 256 8-bit memory cells, corresponding to a memory with 8-bit addresses.
+The memory content is initialized using the Verilog command:
+\begin{verbatim}
+initial
+begin
+	$readmemh("memory.data", RAM, 0, 255);
+end
+\end{verbatim}
+which prescribes how to load the RAM content from the file \code{memory.data} during the device configuration phase.
+
+At each \code{clk\_in} tick, the RAM either reads or writes the content at address \code{addr} according to \code{write\_en}
+by using the wires/registers \code{data\_in}, \code{data\_out}
+
 
 \subsection{LCD driver Module}  \label{ssec:lcd}
-Sample Text \cite{OurWork}
+The \code{LCD\_Driver\_Dbg} module is used to visualize the content of both the RAM module and the internal CPU registers.
+The informations to be shown on display are inputed via the \code{addrInput, dataInput, CPU\_interface, dbg\_reg} wirebuses.
+The user can select via switch one of the two devices, and further use the North and East buttons to move between the memory addresses
+or CPU registers (implemented via a "Ladder" counter).
+These informations are then passed to the here considered module via \code{addrInput} and \code{dbg\_reg}.
+
+The LCD screen comprises a display data RAM used to store the shown characters,
+and communicates with the FPGA board via the following lines:
+\begin{itemize}
+    \item \code{LCD\_DB}: an 8-bit "Data bit" wirebus. Here is used in 4-bit mode, therefore the lower 4 bits are set to high. 
+    4-bit mode requires to perform all the operations by sending separately the upper and lower nible of each 8-bit signal.
+    \item \code{LCD\_E}: single-bit Read/write enable pulse, used to comunicate to the display that the other buses are rady for operating.
+    \item \code{LCD\_RS}: single-bit register select.
+    \item \code{LCD\_RW}: read/write control, here permanetly set to 0 for write-only mode
+\end{itemize}
+Operating the LCD screen via Driver requires the following steps:
+\begin{itemize}
+    \item Power-on initialization: initialization phase, the data bits are set and \code{LCD\_E} is pulsed according to required patterns and timings.
+    \item Display configurations: Here multiple commands are issued to configure the device functioning:
+    \begin{itemize}
+        \item Function set
+        \item Entry mode set: address counter is set to auto-increment
+        \item Display on, cursor and blinking are set off
+        \item Clear Display
+    \end{itemize}
+    \item Character writing
+\end{itemize}
+
+Disclaimer: the LCD driver module here used is based on a modified version of code not originally writtend by the author.

@@ -2188,9 +2188,6 @@
   </bcf:bibdata>
   <bcf:section number="0">
     <bcf:citekey order="1">OurWork</bcf:citekey>
-    <bcf:citekey order="2">OurWork</bcf:citekey>
-    <bcf:citekey order="3">OurWork</bcf:citekey>
-    <bcf:citekey order="4">OurWork</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">
