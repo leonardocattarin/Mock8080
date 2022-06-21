@@ -335,6 +335,7 @@ always @(posedge clk_qzt) begin
 										end 
 										else
 										begin
+											flg_zero <= 0;
 											if(A>=B) begin
 												flg_carry <= 0;
 											end else begin

@@ -74,7 +74,7 @@ wire [7:0] w_data_RAM_2_CPU;
 buf(LCD_RW, 0); // only writing on LCD
 buf(LCD_DB[3:0], 4'b1111); //we use only 4-bit LCD interface
 
-//temp
+//Leds used for various debug purposes
 buf(LED[7:0],w_dbg_addr_RAM);
 //buf(LED[0],w_stable_BTN_EAST);
 
