@@ -332,6 +332,9 @@ INPUT ./img/System.png
 INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmr10.tfm
 INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmbx10.tfm
 INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmbx12.tfm
+INPUT img/States.png
+INPUT ./img/States.png
+INPUT ./img/States.png
 INPUT /usr/share/texmf/tex/latex/lm/t1lmtt.fd
 INPUT /usr/share/texmf/tex/latex/lm/t1lmtt.fd
 INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmtt12.tfm
@@ -364,6 +367,9 @@ INPUT /usr/share/texmf/tex/latex/lm/ts1lmr.fd
 INPUT /usr/share/texmf/fonts/tfm/public/lm/ts1-lmr12.tfm
 INPUT Sections/Code.tex
 INPUT Sections/Code.tex
+INPUT img/Loop.png
+INPUT ./img/Loop.png
+INPUT ./img/Loop.png
 INPUT Sections/Conclusions.tex
 INPUT Sections/Conclusions.tex
 INPUT Sections/Appendix.tex

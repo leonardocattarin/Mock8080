@@ -3,32 +3,39 @@
 \begin{figure}[hbtp]
     \centering
     \includegraphics[width=0.9\textwidth]{img/System.png}
-    \caption{a}
-    \label{fig:diagram}
+    \caption{Modules scheme of the computing system}
+    \label{fig:system}
 \end{figure}
 
-The whole computing system is composed by three main modules (CPU, RAM and LCD debug module)
+The whole computing system is composed by three main modules: CPU, RAM and LCD debug modules
 and by various other auxiliary modules.
-The CPU comprises various 8-bit registers and uses them to fetch data from the RAM module, process it and, eventually write it on the RAM.
-The LCD Debug driver allows to access both the stored RAM bytes and the CPU registers from the LCD screen.
-North and East pushbuttons are stabilized and used along with a switch to change the CPU registers or RAM values shown on the screen.
+The CPU comprises various 8-bit registers and uses them to fetch data from the RAM module, process it and, eventually, write back on the RAM.
+The LCD Debug driver allows to access both the bytes stored in the RAM and the CPU registers from the LCD screen.
+North and East pushbuttons are stabilized and used along with a switch to change the CPU registers or RAM values shown on the display.
+
 Both the CPU and RAM run on three different clocks: a 50 MHz "Master" synchronization clock,
  a 1kHz debug clock used to comunicate with the LCD driver independently from the other operations
- and a last clock, sourced via the South pushbutton, and used to govern the actual computations and input/output operations between CPU and RAM.
-The RAM is pre-loaded with the data and instructions during the FPGA configuration phase.
+ and a last clock, sourced via the South pushbutton and used to govern the timing of the actual CPU and RAM operations.
+
+ The RAM is pre-loaded with the data and instructions during the FPGA configuration phase.
 
 
 
 \subsection{CPU Module}  \label{ssec:cpu}
-*scheme of states for some instructions? (initial 3 states, then example of other instructions)*
+\begin{figure}[hbtp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/States.png}
+    \caption{Fetch-execute cycle corresponding to JMP and ADD instructions}
+    \label{fig:diagram}
+\end{figure}
 
 The CPU module behaves like a state machine which fetches and executes one instruction at time from the RAM in the form of single-byte operation codes ("opcodes").
-If the instruction requires it, the CPU can also fetch other bytes as parameters..
+If the instruction requires it, the CPU can also fetch other bytes as parameters.
 Each instruction execution is divided into several states, kept track by the \code{state} register.
 Various other 8-bit registers are present to help store, process and write data.
 At each \code{clk\_in} edge risetime, the module behaviour is determined by the current instruction and state.
 When the last state corresponding to an instruction is reached, \code{state} register is reset to 0 and the process
-restart by fetching the next instruction.
+restarts by fetching the next instruction.
 
 In general, the instruction fetch-execution cycle behaves as follows:
 \begin{itemize}
@@ -87,17 +94,17 @@ and communicates with the FPGA board via the following lines:
 Operating the LCD screen via Driver requires the following steps:
 \begin{itemize}
     \item Power-on initialization: initialization phase, the data bits are set and \code{LCD\_E} is pulsed according to required patterns and timings.
-    \item Display configurations: Here multiple commands are issued to configure the device functioning:
+    \item Display configuration: Here multiple commands are issued to configure the device:
     \begin{itemize}
         \item Function set
         \item Entry mode set: address counter is set to auto-increment
         \item Display on, cursor and blinking are set off
         \item Clear Display
     \end{itemize}
-    After issuing such commands, the device must be left "to sleep".
+    After issuing such commands, some time must be waited to allow the screen to function properly.
     \item Character writing: finally a cycle of character writing to the display RAM begins. For these commands, the \code{LCD\_RS} must be set
-    to 1 and \code{LCD\_RW} to 0. Each character is represented by a 8-bit vlaue, and it must be transferred as before by sending first the upper nimble ant then the lower nimble.
-    The writing address is then reset to the beginnisng and the wriing process restarts.
+    to 1 and \code{LCD\_RW} to 0. Each character is represented by an 8-bit vlaue, and it must be transferred as indicated before, by sending first the upper nimble ant then the lower nimble.
+    The writing address is then reset to the beginning and the process restarts.
 \end{itemize}
 The final output is:
 

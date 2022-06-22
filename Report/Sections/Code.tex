@@ -1,14 +1,17 @@
 \section{Instruction Set and Code Development} \label{sec:code}
 \subsection{Instructions}
-The Insctructions implemented are freely based on the Intel 8080's instructions.
+The Insctructions implemented are freely based on the ones of the Intel 8080.
 To maintain the number of instruction as low as possible, many reduntant commands were removed.
 For instance, only \code{MOV} commands from and to the \code{B} register
-were implemented. Therefore, to perform copy operations, one needs to use mainly \code{MOV} from and towards \code{B}.
+were implemented. Therefore, to perform copy operations, one needs to use only such instructions.
 
-Furthermore, to avoid the implementation of many different conditional jumps,
+Similarly, to avoid the implementation of many different conditional jumps,
 a single \code{JC} conditional jump is implemented, based on the verification of the \code{flg\_auxiliary}.
 To substitute the other checks, other commands where implemented for the specific purpose of setting the
 auxiliary flag according to the oter flags' values, such as \code{CHZ} (check zero).
+
+It should be noted that the choice of a reduced instruction set
+yields to longer and more complex codes.
 
 The following is the complete list of the instructions implemented:
 \begin{itemize}
@@ -27,20 +30,23 @@ The following is the complete list of the instructions implemented:
 \end{itemize}
 
 \subsection{Example: For Loop}  \label{ssec:laser_technology}
+\begin{figure}[hbtp]
+    \centering
+    \includegraphics[width=0.4\textwidth]{img/Loop.png}
+    \caption{Loop Example Scheme}
+    \label{fig:system}
+\end{figure}
+
 The following example loops over various instructions to generate the
 natural numbers up to a certain value \code{UPPER\_LIMIT} (excluded) and write them on memory starting from a chosen location.
-The idea is to fetch from memory a stored value of a \code{COUNTER} (which can be freely initialized), execute "loop" code
-and followingly increase the counter and perform a comparison with an \code{UPPER\_LIMIT}.
+The idea is to fetch from memory a stored value of a \code{COUNTER} (which can be freely initialized), execute "loop" code, increase the counter and perform a comparison with an \code{UPPER\_LIMIT}.
 If the counter value is different than the limit, the code enters again the loop. Otherwise, it jumps directly to a halt command, and the program stops.
-The code executed in the loop fetches an initial address \code{NUMBERS\_ADDR} and uses it to write the current cpunter value to the address
+The loop code fetches an initial address \code{NUMBERS\_ADDR} and uses it to write the current counter value to the address
 calculated as \code{NUMBERS\_ADDR + COUNTER}.
 In principle, this section could also be substituted by a subroutine call, allowing to implement more complicated operations.
 
-
-(Rappresentazone del codice)
-
 The code is here represented first in pseudo-assembly, and then in explicit Hexadecimal form.
-
+\FloatBarrier
 \begin{verbatim}
 //jump directly to loop instructions
 JMP PTR[LOOP]
