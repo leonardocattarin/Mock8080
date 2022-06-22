@@ -59,7 +59,7 @@ The following is a list of the internal CPU module registers:
 As a side note, the input/output operations usually require additional "buffering" times (blank states) to allow address informations delivery or data fetches.
 
 \subsection{RAM Module}  \label{ssec:ram}
-The \code{Module\_BRAM\_256\_byte} module is based on the usage of the "Block Ram" modules present in the Xilinx Spartan 3A.
+The \code{Module\_BRAM\_256\_byte} module \cite{BRAM} is based on the usage of the "Block Ram" modules present in the Xilinx Spartan 3A.
 From the logical and Verilog code points of view, the Block RAM cells can be declared as arrays of $n$-bit registers.
 In this specific module, the Block ram used is organized as an array of 256 8-bit memory cells, corresponding to a memory with 8-bit addresses.
 The memory content is initialized using the Verilog command:
@@ -91,7 +91,7 @@ and communicates with the FPGA board via the following lines:
     \item \code{LCD\_RS}: single-bit register select, set to 1 only during display memory operations.
     \item \code{LCD\_RW}: read/write control, here permanetly set to 0 for write-only mode
 \end{itemize}
-Operating the LCD screen via Driver requires the following steps:
+Operating the LCD screen via Driver \cite{Board} requires the following steps:
 \begin{itemize}
     \item Power-on initialization: initialization phase, the data bits are set and \code{LCD\_E} is pulsed according to required patterns and timings.
     \item Display configuration: Here multiple commands are issued to configure the device:

@@ -16,5 +16,50 @@
   {}
 \endgroup
 
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global}
+    \entry{Assembly}{manual}{}
+      \list{language}{1}{%
+        {English}%
+      }
+      \list{organization}{1}{%
+        {Intel Corporation}%
+      }
+      \field{sortinit}{1}
+      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{labeltitlesource}{title}
+      \field{title}{8080/8085 Assembly language programming manual}
+      \field{year}{1977}
+      \field{dateera}{ce}
+    \endentry
+    \entry{BRAM}{manual}{}
+      \list{language}{1}{%
+        {English}%
+      }
+      \list{organization}{1}{%
+        {Xilinx, Inc.}%
+      }
+      \field{sortinit}{2}
+      \field{sortinithash}{ed39bb39cf854d5250e95b1c1f94f4ed}
+      \field{labeltitlesource}{title}
+      \field{title}{Using Block RAM in Spartan-3 Generation FPGAs}
+      \field{year}{2005}
+      \field{dateera}{ce}
+    \endentry
+    \entry{Board}{manual}{}
+      \list{language}{1}{%
+        {English}%
+      }
+      \list{organization}{1}{%
+        {Xilinx, Inc.}%
+      }
+      \field{sortinit}{3}
+      \field{sortinithash}{a37a8ef248a93c322189792c34fc68c9}
+      \field{labeltitlesource}{title}
+      \field{title}{Spartan-3A/3AN FPGA Starter Kit Board User Guide}
+    \endentry
+  \enddatalist
+\endrefsection
 \endinput
 

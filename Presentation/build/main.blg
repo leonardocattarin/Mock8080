@@ -2,47 +2,45 @@ This is BibTeX, Version 0.99d (TeX Live 2019/Debian)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
 The style file: plain.bst
-I found no \citation commands---while reading file main.aux
 Database file #1: bibliography.bib
-You've used 0 entries,
+You've used 3 entries,
             2118 wiz_defined-function locations,
-            497 strings with 3997 characters,
-and the built_in function-call counts, 18 in all, are:
-= -- 0
-> -- 0
+            508 strings with 4199 characters,
+and the built_in function-call counts, 452 in all, are:
+= -- 45
+> -- 3
 < -- 0
-+ -- 0
++ -- 3
 - -- 0
-* -- 2
-:= -- 7
-add.period$ -- 0
-call.type$ -- 0
-change.case$ -- 0
+* -- 20
+:= -- 69
+add.period$ -- 6
+call.type$ -- 3
+change.case$ -- 9
 chr.to.int$ -- 0
-cite$ -- 0
-duplicate$ -- 0
-empty$ -- 1
+cite$ -- 3
+duplicate$ -- 24
+empty$ -- 52
 format.name$ -- 0
-if$ -- 1
+if$ -- 100
 int.to.chr$ -- 0
-int.to.str$ -- 0
+int.to.str$ -- 3
 missing$ -- 0
-newline$ -- 3
+newline$ -- 15
 num.names$ -- 0
-pop$ -- 0
+pop$ -- 15
 preamble$ -- 1
-purify$ -- 0
+purify$ -- 9
 quote$ -- 0
-skip$ -- 1
+skip$ -- 12
 stack$ -- 0
-substring$ -- 0
-swap$ -- 0
+substring$ -- 18
+swap$ -- 3
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 0
+type$ -- 12
 warning$ -- 0
 while$ -- 0
-width$ -- 0
-write$ -- 2
-(There was 1 error message)
+width$ -- 4
+write$ -- 23

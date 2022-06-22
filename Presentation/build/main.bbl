@@ -1,3 +1,15 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{Assembly}
+Intel Corporation.
+\newblock {\em 8080/8085 Assembly language programming manual}.
+
+\bibitem{Board}
+Xilinx, Inc.
+\newblock {\em Spartan-3A/3AN FPGA Starter Kit Board User Guide}.
+
+\bibitem{BRAM}
+Xilinx, Inc.
+\newblock {\em Using Block RAM in Spartan-3 Generation FPGAs}.
 
 \end{thebibliography}

@@ -302,6 +302,7 @@ INPUT /usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
+INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmr8.tfm
 INPUT /usr/share/texmf/tex/latex/lm/ot1lmss.fd
 INPUT /usr/share/texmf/tex/latex/lm/ot1lmss.fd
 INPUT /usr/share/texmf/fonts/tfm/public/lm/rm-lmss12.tfm
@@ -379,15 +380,16 @@ INPUT /home/leorando/Lab_Advanced_Electronics/Microprocessor/Mock8080/Report/bui
 INPUT /home/leorando/Lab_Advanced_Electronics/Microprocessor/Mock8080/Report/build/main.out
 INPUT /home/leorando/Lab_Advanced_Electronics/Microprocessor/Mock8080/Report/build/main.run.xml
 OUTPUT /home/leorando/Lab_Advanced_Electronics/Microprocessor/Mock8080/Report/build/main.run.xml
+INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc
 INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc
 INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc
-INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmcsc10.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmr10.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmr12.pfb
+INPUT /usr/share/texmf/fonts/type1/public/lm/lmr8.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmri10.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmri12.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb

@@ -1,0 +1,85 @@
+\frametitle{Exampe: For loop}
+\fontsize{6pt}{5.2}\selectfont
+    \begin{columns}
+      \begin{column}{0.5\textwidth}
+      \begin{verbatim}
+      //jump directly to loop instructions
+      JMP PTR[LOOP]
+
+      //initial counter value, upper limit
+      //and memory location to write numbers.
+      COUNTER = 0
+      UPPER_LIMIT = 0A
+      NUMBERS_ADDR = 35
+
+      //code section for counter increment
+      //and conditional jump
+      #INCREMENT#
+
+      //load counter address in H
+      MVI B,PTR[COUNTER]
+      MOV H,B
+
+      //put 01 in B, use it to increase counter by 1,
+      // put result in B
+      MVI B, 01
+      ADD B
+      MOV B,A
+
+      //write counter to its memory position
+      MOV M[H],B
+
+      //load upper limit memory location in B
+      // and then the limit itself
+      MVI B,PTR[UPPER_LIMIT]
+      MOV H,B
+      MOV B,M[H]
+
+      //compare A (counter) with B(upper limit)
+      //if A=B, zero flag is set to 1
+      CMP B
+      \end{verbatim}
+         \end{column}
+      \begin{column}{0.7\textwidth}  %%<--- here
+          \begin{verbatim}
+            //check if zero flag is 1 (A=B)
+            //and jump to end program if true
+            CHZ
+            JC PTR[AFTER_LOOP]
+
+            #LOOP#
+            //puts counter address in H
+            MVI B,PTR[COUNTER]
+            MOV H,B
+
+            //puts counter in B, A and C
+            MOV B, M[H]
+            MOV A,B
+            MOV C,B
+
+            //load starting address for numbers writing
+            MVI B,PTR[NUMBERS_ADDR]
+            MOV H,B
+            MOV B,M[H]
+
+            //calculates address to write counter value, put in H
+            ADD B
+            MOV B,A
+            MOV H,B
+
+            //re-load counter value in B and A from C
+            //and write it to memory
+            MOV B,C
+            MOV A,B
+            MOV M[H],B
+
+            //jump to increment routine
+            JMP [INCREMENT]
+
+            #AFTER_LOOP#
+            HLT
+
+            #NUMBERS_ADDR#
+          \end{verbatim}
+      \end{column}
+      \end{columns}
