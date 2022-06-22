@@ -1,5 +1,12 @@
 \section{Components and Implementation} \label{sec:impl}
-(Block diagram)
+
+\begin{figure}[hbtp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{img/System.png}
+    \caption{a}
+    \label{fig:diagram}
+\end{figure}
+
 The whole computing system is composed by three main modules (CPU, RAM and LCD debug module)
 and by various other auxiliary modules.
 The CPU comprises various 8-bit registers and uses them to fetch data from the RAM module, process it and, eventually write it on the RAM.
@@ -13,7 +20,6 @@ The RAM is pre-loaded with the data and instructions during the FPGA configurati
 
 
 \subsection{CPU Module}  \label{ssec:cpu}
-*Block scheme/image of CPU internal registers and buses*
 *scheme of states for some instructions? (initial 3 states, then example of other instructions)*
 
 The CPU module behaves like a state machine which fetches and executes one instruction at time from the RAM in the form of single-byte operation codes ("opcodes").
@@ -73,9 +79,9 @@ The LCD screen comprises a display data RAM used to store the shown characters,
 and communicates with the FPGA board via the following lines:
 \begin{itemize}
     \item \code{LCD\_DB}: an 8-bit "Data bit" wirebus. Here is used in 4-bit mode, therefore the lower 4 bits are set to high. 
-    4-bit mode requires to perform all the operations by sending separately the upper and lower nible of each 8-bit signal.
-    \item \code{LCD\_E}: single-bit Read/write enable pulse, used to comunicate to the display that the other buses are rady for operating.
-    \item \code{LCD\_RS}: single-bit register select.
+    4-bit mode requires to perform all the operations by sending separately the upper and lower "nible" of each 8-bit word.
+    \item \code{LCD\_E}: single-bit Read/write enable pulse, used to comunicate to the display that the other buses are ready for operating.
+    \item \code{LCD\_RS}: single-bit register select, set to 1 only during display memory operations.
     \item \code{LCD\_RW}: read/write control, here permanetly set to 0 for write-only mode
 \end{itemize}
 Operating the LCD screen via Driver requires the following steps:
@@ -88,7 +94,23 @@ Operating the LCD screen via Driver requires the following steps:
         \item Display on, cursor and blinking are set off
         \item Clear Display
     \end{itemize}
-    \item Character writing
+    After issuing such commands, the device must be left "to sleep".
+    \item Character writing: finally a cycle of character writing to the display RAM begins. For these commands, the \code{LCD\_RS} must be set
+    to 1 and \code{LCD\_RW} to 0. Each character is represented by a 8-bit vlaue, and it must be transferred as before by sending first the upper nimble ant then the lower nimble.
+    The writing address is then reset to the beginnisng and the wriing process restarts.
 \end{itemize}
+The final output is:
+
+\begin{verbatim}
+    RM AA XX
+\end{verbatim}
+for the RAM debug mode, where AA stands for the 8-bit address and XX the relative value.
+All bytes are represented in hexadecimal notation.
+
+Foir the CPU debug the output is:
+\begin{verbatim}
+    CP RG XX
+\end{verbatim}
+where RG stands for a register name, and XX is the content.
 
 Disclaimer: the LCD driver module here used is based on a modified version of code not originally writtend by the author.
